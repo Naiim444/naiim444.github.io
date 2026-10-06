@@ -1,0 +1,903 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Naïm · Portfolio BTS SIO SISR</title>
+<meta name="description" content="Portfolio de Naïm, étudiant en BTS SIO option SISR et alternant à la DSI du Département des Yvelines : compétences, projets, parcours et veille en cybersécurité.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Naïm · Portfolio BTS SIO SISR">
+<meta property="og:description" content="Compétences, projets (dont l'application HASHI), parcours et veille en cybersécurité.">
+<meta name="theme-color" content="#4f46e5">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="fonts/fonts.css">
+</head>
+<body>
+<style>
+/* Layout : un site où chaque onglet a sa couleur. Le fond de la page se teinte de la couleur de l'onglet actif, une pastille colorée glisse dans la barre de navigation, et les vues entrent par le côté. Projets : liste en grandes lignes, puis fiche avec sous-onglets et défilement précédent / suivant. */
+:root {
+  --base: #fbfbfe;
+  --card: #ffffff;
+  --ink: #1e2033;
+  --muted: #6a6f88;
+  --line: rgba(30, 32, 51, .07);
+  --shadow: 0 1px 2px rgba(30, 32, 51, .04), 0 14px 34px -18px rgba(30, 32, 51, .16);
+  --on-accent: #ffffff;
+  --mix: 9%;
+  --a-accueil: #4f46e5;
+  --a-competences: #0f766e;
+  --a-projets: #e11d48;
+  --a-parcours: #b45309;
+  --a-veille: #7c3aed;
+  --a-contact: #15803d;
+  --t-accueil: #f1f3ff; --t-competences: #ebf9f5; --t-projets: #fff1f4; --t-parcours: #fff8e8; --t-veille: #f6f0ff; --t-contact: #edfaf1;
+  --accent: var(--a-accueil);
+  --f-display: "Unbounded", "Segoe UI", system-ui, sans-serif;
+  --f-body: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+:root[data-theme="dark"] {
+  --base: #0d1020; --card: rgba(255, 255, 255, .06); --ink: #eef0fb; --muted: #a2a8c6;
+  --line: rgba(238, 240, 251, .16); --on-accent: #0d1020; --mix: 16%;
+  --a-accueil: #a5b4fc; --a-competences: #5eead4; --a-projets: #fda4af;
+  --a-parcours: #fcd34d; --a-veille: #d8b4fe; --a-contact: #86efac;
+    --t-accueil: color-mix(in srgb, var(--a-accueil) 14%, var(--base)); --t-competences: color-mix(in srgb, var(--a-competences) 14%, var(--base)); --t-projets: color-mix(in srgb, var(--a-projets) 14%, var(--base)); --t-parcours: color-mix(in srgb, var(--a-parcours) 14%, var(--base)); --t-veille: color-mix(in srgb, var(--a-veille) 14%, var(--base)); --t-contact: color-mix(in srgb, var(--a-contact) 14%, var(--base));
+  color-scheme: dark;
+}
+body[data-view="accueil"] { --accent: var(--a-accueil); --page: var(--t-accueil); }
+body[data-view="competences"] { --accent: var(--a-competences); --page: var(--t-competences); }
+body[data-view="projets"] { --accent: var(--a-projets); --page: var(--t-projets); }
+body[data-view="parcours"] { --accent: var(--a-parcours); --page: var(--t-parcours); }
+body[data-view="veille"] { --accent: var(--a-veille); --page: var(--t-veille); }
+body[data-view="contact"] { --accent: var(--a-contact); --page: var(--t-contact); }
+
+* { box-sizing: border-box; }
+body { background-color: var(--page, var(--t-accueil)); color: var(--ink); font-family: var(--f-body); font-size: 16px; line-height: 1.6; padding-inline: 16px; padding-block: 0 56px; min-height: 100vh; transition: background-color .6s ease; }
+button { font: inherit; color: inherit; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+.shell { max-width: 1040px; margin-inline: auto; }
+[hidden] { display: none !important; }
+
+/* Navigation */
+.navwrap { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; padding-block: 14px; display: flex; justify-content: center; }
+.pill { position: relative; display: flex; gap: 2px; padding: 5px; border-radius: 999px; background: var(--card); border: 1px solid var(--line); overflow-x: auto; max-width: 100%; scrollbar-width: none; backdrop-filter: blur(10px); }
+.pill::-webkit-scrollbar { display: none; }
+.tab { position: relative; z-index: 1; background: none; border: 0; cursor: pointer; padding: 9px 16px; border-radius: 999px; font-size: 14px; font-weight: 600; color: var(--muted); white-space: nowrap; transition: color .3s; }
+.tab:hover { color: var(--ink); }
+.tab[aria-selected="true"] { color: var(--accent); }
+.hl { position: absolute; z-index: 0; top: 5px; bottom: 5px; left: 0; width: 0; border-radius: 999px; background: color-mix(in srgb, var(--accent) 13%, var(--card)); transition: left .45s cubic-bezier(.3,1.2,.4,1), width .45s cubic-bezier(.3,1.2,.4,1), background-color .6s; }
+
+/* Typo */
+h1 { font-family: var(--f-display); font-weight: 500; font-size: clamp(3.2rem, 15vw, 8rem); line-height: .95; letter-spacing: -.04em; margin: 0 0 24px; }
+h2 { font-family: var(--f-display); font-weight: 500; font-size: clamp(1.7rem, 6.5vw, 3.2rem); letter-spacing: -.03em; line-height: 1.05; margin: 0 0 12px; text-wrap: balance; }
+h3 { font-family: var(--f-display); font-weight: 500; font-size: 1rem; line-height: 1.3; margin: 0 0 8px; letter-spacing: -.01em; }
+h4 { font-family: var(--f-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 0 0 8px; font-weight: 500; }
+.kicker { font-family: var(--f-mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin: 0 0 14px; font-weight: 500; transition: color .6s; }
+.sub { color: var(--muted); max-width: 56ch; margin: 0 0 32px; font-size: 1.05rem; }
+p { max-width: 62ch; margin: 0 0 12px; }
+.lead { font-size: clamp(1.15rem, 3vw, 1.6rem); line-height: 1.4; max-width: 30ch; font-weight: 500; margin-bottom: 28px; }
+.rot { display: inline-block; color: var(--accent); font-weight: 700; transition: color .6s; }
+.ex { font-family: var(--f-mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; background: color-mix(in srgb, var(--accent) 14%, transparent); color: var(--accent); font-weight: 500; white-space: nowrap; }
+.real { font-family: var(--f-mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent); color: var(--accent); white-space: nowrap; }
+.ph { background: color-mix(in srgb, var(--accent) 22%, transparent); padding: 0 6px; border-radius: 4px; }
+
+/* Boutons et cartes */
+.cta { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 48px; }
+.btn { font-weight: 700; font-size: 15px; padding: 13px 24px; border-radius: 999px; border: 2px solid var(--accent); background: var(--accent); color: var(--on-accent); cursor: pointer; transition: transform .2s, background-color .6s, border-color .6s; }
+.btn:hover { transform: translateY(-2px); }
+.btn.ghost { background: transparent; color: var(--ink); }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 24px; padding: 24px; min-width: 0; text-align: left; box-shadow: var(--shadow); }
+button.card { cursor: pointer; display: block; width: 100%; transition: transform .25s, border-color .25s; }
+button.card:hover { transform: translateY(-4px) rotate(-.4deg); border-color: var(--accent); }
+.card p { font-size: 14.5px; color: var(--muted); }
+.card .tag { font-family: var(--f-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 8px; transition: color .6s; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font-family: var(--f-mono); font-size: 12px; border: 1px solid var(--line); padding: 3px 10px; border-radius: 999px; color: var(--muted); background: transparent; }
+button.chip { cursor: pointer; font-size: 13px; padding: 6px 14px; color: var(--ink); }
+button.chip:hover { border-color: var(--accent); }
+button.chip[aria-pressed="true"] { background: color-mix(in srgb, var(--accent) 14%, transparent); color: var(--accent); border-color: transparent; font-weight: 600; }
+.filters { margin-bottom: 24px; }
+
+/* Accueil : chapitres au défilement */
+.hero { min-height: calc(100vh - 90px); display: flex; flex-direction: column; justify-content: center; position: relative; }
+.hero-in { transform-origin: 0 50%; will-change: transform, opacity; }
+.hint { position: absolute; left: 0; bottom: 24px; display: flex; align-items: center; gap: 10px; font-family: var(--f-mono); font-size: 12px; color: var(--muted); }
+.hint i { width: 1px; height: 28px; background: var(--accent); display: block; transform-origin: 0 0; animation: drip 1.8s ease-in-out infinite; }
+@keyframes drip { 0% { transform: scaleY(0); } 60% { transform: scaleY(1); } 100% { transform: scaleY(1); opacity: 0; } }
+.words-wrap { padding-block: 14vh; }
+.words { font-family: var(--f-display); font-weight: 500; font-size: clamp(1.5rem, 5.4vw, 3.4rem); line-height: 1.2; letter-spacing: -.03em; max-width: 22em; margin: 0; }
+.words span { color: color-mix(in srgb, var(--ink) 24%, transparent); transition: color .35s; }
+.words span.lit { color: var(--ink); }
+.pin { position: relative; }
+.stick { position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column; justify-content: center; overflow: hidden; padding-top: 56px; }
+.steps { position: relative; min-height: 55vh; }
+.step { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; opacity: 0; transform: translateY(48px) scale(.97); transition: opacity .55s ease, transform .7s cubic-bezier(.2,.8,.2,1); pointer-events: none; }
+.step.on { opacity: 1; transform: none; }
+.step.past { opacity: 0; transform: translateY(-48px) scale(.97); }
+.step .no { font-family: var(--f-mono); font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
+.step h2 { font-size: clamp(2.4rem, 10vw, 6.2rem); line-height: .95; letter-spacing: -.045em; margin-bottom: 20px; }
+.step p { font-size: clamp(1.05rem, 2.4vw, 1.4rem); color: var(--muted); max-width: 34em; line-height: 1.45; }
+.dots { display: flex; gap: 8px; margin-top: 16px; }
+.dots i { height: 6px; width: 24px; border-radius: 3px; background: var(--line); transition: width .4s, background-color .4s; display: block; }
+.dots i.on { width: 56px; background: var(--accent); }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 16px; padding-block: 12vh; }
+.stat { padding: 8px 0; }
+.stat b { display: block; font-family: var(--f-display); font-weight: 500; font-size: clamp(2.6rem, 8vw, 4.4rem); letter-spacing: -.05em; line-height: 1; color: var(--accent); font-variant-numeric: tabular-nums; transition: color .6s; }
+.stat span { display: block; margin-top: 10px; color: var(--muted); font-size: 14.5px; }
+.sh { font-size: clamp(2rem, 8vw, 4.6rem); letter-spacing: -.045em; margin-bottom: 24px; }
+.trackwrap { overflow: hidden; }
+.track { display: flex; gap: 16px; will-change: transform; }
+.pc { flex: 0 0 min(78vw, 400px); min-height: 290px; display: flex; flex-direction: column; gap: 10px; text-align: left; background: var(--card); border: 1px solid var(--line); border-radius: 28px; padding: 26px; cursor: pointer; box-shadow: var(--shadow); transition: border-color .25s; }
+.pc:hover { border-color: var(--accent); }
+.pc .n { font-family: var(--f-mono); font-size: 13px; color: var(--muted); }
+.pc h3 { font-size: 1.25rem; margin: 0; }
+.pc .chips { margin-top: auto; }
+.pc .go { font-weight: 700; color: var(--accent); }
+.endcta { text-align: center; padding-block: 16vh 8vh; }
+.endcta h2 { font-size: clamp(2.6rem, 11vw, 7rem); letter-spacing: -.05em; }
+.endcta .sub { margin-inline: auto; }
+.static .pin { height: auto !important; }
+.static .stick { position: static; height: auto; padding-top: 48px; }
+.static .steps { min-height: 0; }
+.static .step { position: static; opacity: 1; transform: none; margin-bottom: 48px; pointer-events: auto; }
+.static .dots { display: none; }
+.static .words span { color: var(--ink); }
+.static .trackwrap { overflow-x: auto; }
+.static .hint { display: none; }
+
+/* Compétences */
+.skill { display: flex; flex-direction: column; gap: 10px; }
+.skill h3 { font-size: .95rem; }
+.skill .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.skill .go { margin-top: auto; align-self: flex-start; font-weight: 700; font-size: 14px; background: none; border: 0; padding: 0; cursor: pointer; color: var(--accent); }
+.skill .go:hover { text-decoration: underline; }
+.skill[hidden] { display: none; }
+
+/* Projets : liste */
+.rows { display: flex; flex-direction: column; gap: 10px; }
+.prow { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 8px 18px; align-items: center; width: 100%; text-align: left; cursor: pointer; background: var(--card); border: 1px solid var(--line); border-radius: 24px; padding: 20px 24px; box-shadow: var(--shadow); transition: transform .25s, border-color .25s; }
+.prow:hover { transform: translateX(6px); border-color: var(--accent); }
+.prow[hidden] { display: none; }
+.prow .n { font-family: var(--f-mono); font-size: 13px; color: var(--muted); }
+.prow h3 { font-size: 1.1rem; margin: 0 0 6px; }
+.prow .meta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.arrow { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--line); display: grid; place-items: center; transition: background-color .25s, color .25s; font-size: 18px; }
+.prow:hover .arrow { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+@media (max-width: 520px) { .prow { grid-template-columns: minmax(0, 1fr) auto; } .prow .n { display: none; } }
+
+/* Projets : fiche */
+.pbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 28px; }
+.pbar .sp { flex: 1; }
+.pbar button { font-weight: 700; font-size: 14px; background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 8px 16px; cursor: pointer; }
+.pbar button:hover { border-color: var(--accent); }
+.cnt { font-family: var(--f-mono); font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.pmeta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 24px; }
+.stabs { position: relative; display: inline-flex; max-width: 100%; gap: 2px; padding: 5px; border-radius: 999px; background: var(--card); border: 1px solid var(--line); overflow-x: auto; margin-bottom: 24px; scrollbar-width: none; }
+.stabs::-webkit-scrollbar { display: none; }
+.st { position: relative; z-index: 1; background: none; border: 0; cursor: pointer; padding: 8px 16px; border-radius: 999px; font-size: 14px; font-weight: 600; color: var(--muted); white-space: nowrap; transition: color .3s; }
+.st[aria-selected="true"] { color: var(--accent); }
+.shl { position: absolute; z-index: 0; top: 5px; bottom: 5px; left: 0; width: 0; border-radius: 999px; background: color-mix(in srgb, var(--accent) 13%, var(--card)); transition: left .4s cubic-bezier(.3,1.2,.4,1), width .4s cubic-bezier(.3,1.2,.4,1), background-color .6s; }
+.pg { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px 32px; }
+.pg > div { min-width: 0; }
+.pg .wide { grid-column: 1 / -1; }
+.pg ul { margin: 0; padding-left: 18px; font-size: 15px; }
+.pg li + li { margin-top: 5px; }
+.pg p { font-size: 15px; }
+pre.sch { font-family: var(--f-mono); font-size: 12.5px; line-height: 1.5; background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 16px 18px; margin: 0; overflow-x: auto; }
+.swatches { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 10px; }
+.sw { display: flex; align-items: center; gap: 8px; font-family: var(--f-mono); font-size: 12px; color: var(--muted); }
+.sw i { width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--line); display: block; }
+.res { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 10px; }
+.res a { display: flex; flex-direction: column; text-decoration: none; border: 1px solid var(--line); border-radius: 16px; padding: 12px 14px; background: var(--card); min-width: 0; }
+.res a:hover { border-color: var(--accent); }
+.res b { font-weight: 700; font-size: 14.5px; }
+.res span { font-family: var(--f-mono); font-size: 12px; color: var(--muted); }
+.shotwrap { position: relative; }
+.ar { position: absolute; top: 42%; z-index: 3; width: 52px; height: 52px; border-radius: 50%; border: 3px solid #fff; background: var(--accent); color: #fff; font-size: 24px; font-weight: 800; line-height: 1; cursor: pointer; box-shadow: 0 6px 18px rgba(0,0,0,.35); display: grid; place-items: center; transition: transform .2s, opacity .2s; -webkit-backdrop-filter: none; backdrop-filter: none; }
+.ar:hover { transform: scale(1.1); filter: brightness(.92); }
+.ar:disabled { opacity: 0; pointer-events: none; }
+.ar.l { left: -18px; } .ar.r { right: -18px; }
+#lb .ar { position: absolute; top: 50%; margin-top: -23px; }
+#lb .ar.l { left: 18px; } #lb .ar.r { right: 18px; }
+@media (max-width: 640px) { .ar.l { left: -6px; } .ar.r { right: -6px; } }
+.docimg { display: block; padding: 0; border: 1px solid var(--line); border-radius: 20px; overflow: hidden; background: var(--card); cursor: zoom-in; width: 100%; max-width: 760px; max-height: 520px; position: relative; }
+.docimg img { display: block; width: 100%; height: auto; }
+.docimg::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 90px; background: linear-gradient(transparent, var(--card)); pointer-events: none; }
+#lb.solo .ar { display: none; }
+#lb img { background: #fff; }
+.shots figure { transition: transform .35s cubic-bezier(.2,.8,.2,1); }
+.shots figure:hover { transform: translateY(-8px) scale(1.02); }
+.shots button { transition: box-shadow .35s, border-color .25s; }
+.shots figure:hover button { box-shadow: 0 18px 34px rgba(0,0,0,.18); border-color: var(--accent); }
+.docimg, .vid { transition: transform .4s cubic-bezier(.2,.8,.2,1), box-shadow .4s; }
+.docimg.full { max-width: 1000px; max-height: none; }
+.docimg.full::after { display: none; }
+.docimg:hover { transform: scale(1.01); box-shadow: 0 18px 40px rgba(0,0,0,.16); }
+.ar:not(:disabled) { animation: nudge 2.4s ease-in-out infinite; }
+.ar.r:not(:disabled) { --d: 6px; } .ar.l:not(:disabled) { --d: -6px; }
+@keyframes nudge { 0%, 70%, 100% { translate: 0 0; } 82% { translate: var(--d) 0; } 92% { translate: calc(var(--d) * -.3) 0; } }
+#lb.on img { animation: lbin .35s cubic-bezier(.2,.8,.2,1); }
+@keyframes lbin { from { opacity: 0; transform: scale(.92); } to { opacity: 1; transform: none; } }
+#lb.on { animation: lbfade .25s ease; }
+@keyframes lbfade { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .ar { animation: none !important; } .shots figure:hover, .docimg:hover { transform: none; } }
+.shots { display: flex; gap: 14px; overflow-x: auto; padding: 4px 2px 14px; scroll-snap-type: x proximity; }
+.shots figure { margin: 0; flex: 0 0 auto; width: 190px; scroll-snap-align: start; }
+.shots button { display: block; padding: 0; border: 1px solid var(--line); border-radius: 22px; overflow: hidden; background: var(--card); cursor: zoom-in; width: 100%; }
+.shots img { display: block; width: 100%; height: auto; aspect-ratio: 390 / 844; }
+.shots figcaption { font-family: var(--f-mono); font-size: 12px; color: var(--muted); margin-top: 8px; }
+.shots.frames figure { width: 300px; }
+.shots.frames button { border-radius: 16px; }
+.shots.frames img { aspect-ratio: 16 / 9; }
+@media (max-width: 520px) { .shots.frames figure { width: 240px; } }
+.seg { display: inline-flex; gap: 4px; padding: 4px; border: 1px solid var(--line); border-radius: 999px; background: var(--card); margin-bottom: 12px; }
+.seg button { border: 0; background: transparent; font: 700 13px var(--f-body); padding: 7px 14px; border-radius: 999px; cursor: pointer; color: var(--muted); }
+.seg button[aria-pressed="true"] { background: var(--accent); color: #fff; }
+.vid { width: 100%; max-width: 860px; display: block; aspect-ratio: 16 / 9; border-radius: 20px; background: #15201A; border: 1px solid var(--line); }
+#lb { position: fixed; inset: 0; z-index: 99; background: rgba(20,24,22,.78); display: none; align-items: center; justify-content: center; padding: 20px; cursor: zoom-out; }
+#lb.on { display: flex; }
+#lb img { max-height: 100%; max-width: 100%; border-radius: 28px; }
+.slotbox { border: 2px dashed var(--accent); border-radius: 16px; padding: 18px; color: var(--ink); font-size: 14.5px; }
+.grp { margin-bottom: 14px; }
+
+/* Parcours */
+.tl { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+.tl li { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 20px; }
+@media (max-width: 560px) { .tl li { grid-template-columns: minmax(0, 1fr); gap: 4px; } }
+.tl time { font-family: var(--f-mono); font-size: 13px; color: var(--accent); padding-top: 22px; transition: color .6s; }
+.tl p { margin: 0; }
+
+/* Contact */
+.mailbig { font-family: var(--f-display); font-weight: 500; font-size: clamp(1.1rem, 4.8vw, 2.2rem); letter-spacing: -.02em; overflow-wrap: anywhere; user-select: all; margin: 8px 0 16px; line-height: 1.2; }
+.contact { max-width: 640px; display: flex; flex-direction: column; gap: 12px; }
+
+footer { margin-top: 72px; font-family: var(--f-mono); font-size: 12px; color: var(--muted); }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+
+<div class="shell">
+  <header class="navwrap">
+    <nav class="pill" id="tabs" role="tablist" aria-label="Sections du portfolio">
+      <span class="hl" id="hl" aria-hidden="true"></span>
+      <button class="tab" role="tab" data-v="accueil" aria-selected="true">Accueil</button>
+      <button class="tab" role="tab" data-v="competences" aria-selected="false">Compétences</button>
+      <button class="tab" role="tab" data-v="projets" aria-selected="false">Projets</button>
+      <button class="tab" role="tab" data-v="parcours" aria-selected="false">Parcours</button>
+      <button class="tab" role="tab" data-v="veille" aria-selected="false">Veille</button>
+      <button class="tab" role="tab" data-v="contact" aria-selected="false">Contact</button>
+    </nav>
+  </header>
+
+  <main id="stage">
+
+    <!-- ACCUEIL -->
+    <section class="view" id="v-accueil" aria-label="Accueil">
+
+      <div class="hero">
+        <div class="hero-in" id="hero-in">
+          <p class="kicker rv">Portfolio · BTS SIO option SISR</p>
+          <h1 class="rv">Naïm</h1>
+          <p class="lead rv">Alternant à la DSI du Département des Yvelines, passionné par <span class="rot" id="rot">la cybersécurité</span>.</p>
+          <div class="cta rv">
+            <button class="btn" type="button" data-go="projets">Voir mes projets</button>
+            <button class="btn ghost" type="button" data-go="contact">Me contacter</button>
+          </div>
+        </div>
+        <div class="hint" aria-hidden="true"><span>Fais défiler</span><i></i></div>
+      </div>
+
+      <div class="words-wrap sr">
+        <p class="words" id="words">Je suis passé de la relation client au support informatique. Chaque jour, j'aide des agents à résoudre leurs incidents. Je me forme aux systèmes et aux réseaux, et je vise la cybersécurité.</p>
+      </div>
+
+      <div class="pin" id="pin-steps" style="height: 420vh">
+        <div class="stick">
+          <p class="kicker">Mon chemin</p>
+          <div class="steps" id="steps">
+            <div class="step"><span class="no">Étape 1</span><h2>Relation client</h2><p>Plusieurs années au contact du public, notamment à la MDPH : écoute, clarté et gestion de situations sensibles.</p></div>
+            <div class="step"><span class="no">Étape 2</span><h2>Support informatique</h2><p>Hotline de la DSI du Département des Yvelines : qualification des tickets, escalade, téléphonie et base de connaissance de l'équipe.</p></div>
+            <div class="step"><span class="no">Étape 3</span><h2>BTS SIO SISR</h2><p>ENSITECH, à Cergy, de 2026 à 2028 : systèmes, réseaux et projets pour construire des preuves concrètes.</p></div>
+            <div class="step"><span class="no">Étape 4</span><h2>Cybersécurité</h2><p>Licence professionnelle puis Master SSI, pour me spécialiser dans la protection des systèmes d'information.</p></div>
+          </div>
+          <div class="dots" id="dots" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+        </div>
+      </div>
+
+      <div class="stats">
+        <div class="stat sr"><b data-to="3">3</b><span>blocs de compétences du référentiel</span></div>
+        <div class="stat sr"><b data-to="16">16</b><span>écrans maquettés pour HASHI</span></div>
+        <div class="stat sr"><b data-to="7">7</b><span>jalons de réalisation planifiés</span></div>
+        <div class="stat sr"><b data-to="58" data-unit=" s">58 s</b><span>de film motion design pour HASHI</span></div>
+      </div>
+
+      <div class="pin" id="pin-proj" style="height: 300vh">
+        <div class="stick">
+          <p class="kicker">Projets</p>
+          <h2 class="sh">À la une</h2>
+          <div class="trackwrap"><div class="track" id="track"></div></div>
+        </div>
+      </div>
+
+      <div class="endcta sr">
+        <h2>Parlons-en.</h2>
+        <p class="sub">Pour une alternance, un stage ou une question sur mes projets.</p>
+        <div class="cta" style="justify-content:center;margin-bottom:0">
+          <button class="btn" type="button" data-go="contact">Me contacter</button>
+          <button class="btn ghost" type="button" data-go="competences">Voir mes compétences</button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- COMPÉTENCES -->
+    <section class="view" id="v-competences" aria-label="Compétences" hidden>
+      <p class="kicker rv">Référentiel BTS SIO SISR</p>
+      <h2 class="rv">Compétences</h2>
+      <p class="sub rv">Chaque compétence renvoie vers le projet ou l'expérience qui la prouve.</p>
+      <div class="chips filters rv" id="bfilters" role="group" aria-label="Filtrer par bloc">
+        <button class="chip" type="button" data-b="0" aria-pressed="true">Tous les blocs</button>
+        <button class="chip" type="button" data-b="1" aria-pressed="false">Bloc 1 · Support</button>
+        <button class="chip" type="button" data-b="2" aria-pressed="false">Bloc 2 · Systèmes et réseaux</button>
+        <button class="chip" type="button" data-b="3" aria-pressed="false">Bloc 3 · Cybersécurité</button>
+      </div>
+      <div class="grid" id="skills"></div>
+    </section>
+
+    <!-- PROJETS -->
+    <section class="view" id="v-projets" aria-label="Projets" hidden>
+      <div id="plist">
+        <p class="kicker rv">Réalisations</p>
+        <h2 class="rv">Projets</h2>
+        <p class="sub rv">Ouvre un projet pour parcourir sa fiche, puis passe au suivant avec les flèches.</p>
+        <div class="chips filters rv" id="pfilters" role="group" aria-label="Filtrer par domaine">
+          <button class="chip" type="button" data-f="all" aria-pressed="true">Tous</button>
+          <button class="chip" type="button" data-f="perso" aria-pressed="false">Personnel</button>
+          <button class="chip" type="button" data-f="systemes" aria-pressed="false">Systèmes</button>
+          <button class="chip" type="button" data-f="reseau" aria-pressed="false">Réseau</button>
+          <button class="chip" type="button" data-f="support" aria-pressed="false">Support</button>
+          <button class="chip" type="button" data-f="securite" aria-pressed="false">Sécurité</button>
+        </div>
+        <div class="rows" id="rows"></div>
+      </div>
+
+      <div id="pview" hidden>
+        <div class="pbar">
+          <button type="button" id="pback">← Tous les projets</button>
+          <span class="sp"></span>
+          <button type="button" id="pprev" aria-label="Projet précédent">←</button>
+          <span class="cnt" id="pcnt">1 / 5</span>
+          <button type="button" id="pnext" aria-label="Projet suivant">→</button>
+        </div>
+        <div id="pdetails">
+
+          <article class="pd" data-i="0" hidden>
+            <p class="kicker">Projet personnel</p>
+            <h2 style="display:flex;align-items:center;gap:14px"><svg viewBox="0 0 120 120" width="56" height="56" aria-hidden="true" style="flex:none"><circle cx="60" cy="82" r="15" fill="#E06806"/><path d="M31 82 A29 29 0 0 1 89 82" fill="none" stroke="#E06806" stroke-width="9" stroke-linecap="round"/><path d="M16 82 A44 44 0 0 1 104 82" fill="none" stroke="#3DAA5C" stroke-width="9" stroke-linecap="round"/><rect x="14" y="98" width="92" height="9" rx="4.5" fill="#3DAA5C"/></svg><span style="font-weight:600;letter-spacing:.03em">HASHI</span></h2>
+            <div class="pmeta"><span class="real">Projet réel</span><span class="chip">Phase : conception et cahier des charges</span><span class="chip">Python · transformers</span><span class="chip">Ciqual · Open Food Facts</span></div>
+            <div class="stabs" role="tablist" aria-label="Sections du projet">
+              <span class="shl" aria-hidden="true"></span>
+              <button class="st" role="tab" data-s="pres" aria-selected="true">Présentation</button>
+              <button class="st" role="tab" data-s="archi" aria-selected="false">Architecture</button>
+              <button class="st" role="tab" data-s="maq" aria-selected="false">Maquettes</button>
+              <button class="st" role="tab" data-s="doc" aria-selected="false">Vidéo et documents</button>
+            </div>
+
+            <div class="sp-panel" data-s="pres">
+              <div class="pg">
+                <div class="wide"><h4>Le projet</h4><p>HASHI propose des recettes adaptées à l'objectif de poids, au régime (dont le Halal) et au budget de l'utilisateur. La liste de courses se génère automatiquement, semaine par semaine, et l'app compare les prix entre enseignes.</p></div>
+                <div><h4>Mon rôle</h4><ul><li>Définition du besoin et des parcours utilisateur</li><li>Rédaction du cahier des charges et de sa suite</li><li>Choix techniques et plan de réalisation en 7 jalons</li><li>Maquettes de 16 écrans, en thèmes clair et sombre</li><li>Film motion design de 58 s : script, storyboard et direction, réalisé avec un assistant IA</li><li>Direction artistique : nom, logo, palette, typographies et illustrations</li></ul></div>
+                <div><h4>Identité visuelle</h4><p>Nom : HASHI, « baguettes » en japonais. Symbole Respiration (un point qui rayonne en ondes au-dessus d'un sol vert) à côté du nom, en Unbounded 600. Titres en Bricolage Grotesque, texte en DM Sans. L'orange de marque est enrichi de verts pour la santé et le bien-être.</p>
+                  <div class="swatches"><span class="sw"><i style="background:#E06806"></i>#E06806</span><span class="sw"><i style="background:#3DAA5C"></i>#3DAA5C</span><span class="sw"><i style="background:#17482C"></i>#17482C</span><span class="sw"><i style="background:#DDF3E1"></i>#DDF3E1</span><span class="sw"><i style="background:#FFF7EC"></i>#FFF7EC</span><span class="sw"><i style="background:#15201A"></i>#15201A</span></div></div>
+                <div class="wide"><h4>Logo</h4><div style="display:flex;flex-wrap:wrap;gap:12px"><div style="flex:1 1 260px;min-height:120px;border-radius:20px;background:#FFF7EC;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;gap:14px;padding:16px"><svg viewBox="0 0 120 120" width="64" height="64" aria-hidden="true" style="flex:none"><circle cx="60" cy="82" r="15" fill="#E06806"/><path d="M31 82 A29 29 0 0 1 89 82" fill="none" stroke="#E06806" stroke-width="9" stroke-linecap="round"/><path d="M16 82 A44 44 0 0 1 104 82" fill="none" stroke="#3DAA5C" stroke-width="9" stroke-linecap="round"/><rect x="14" y="98" width="92" height="9" rx="4.5" fill="#3DAA5C"/></svg><span style="font-family:var(--f-display);font-weight:600;font-size:40px;letter-spacing:.03em;color:#15201A">HASHI</span></div><div style="flex:1 1 260px;min-height:120px;border-radius:20px;background:#E06806;display:flex;align-items:center;justify-content:center;gap:14px;padding:16px"><svg viewBox="0 0 120 120" width="64" height="64" aria-hidden="true" style="flex:none"><circle cx="60" cy="82" r="15" fill="#FFF7EC"/><path d="M31 82 A29 29 0 0 1 89 82" fill="none" stroke="#FFF7EC" stroke-width="9" stroke-linecap="round"/><path d="M16 82 A44 44 0 0 1 104 82" fill="none" stroke="#17482C" stroke-width="9" stroke-linecap="round"/><rect x="14" y="98" width="92" height="9" rx="4.5" fill="#17482C"/></svg><span style="font-family:var(--f-display);font-weight:600;font-size:40px;letter-spacing:.03em;color:#15201A">HASHI</span></div><div style="flex:1 1 260px;min-height:120px;border-radius:20px;background:#0E1611;display:flex;align-items:center;justify-content:center;gap:14px;padding:16px"><svg viewBox="0 0 120 120" width="64" height="64" aria-hidden="true" style="flex:none"><circle cx="60" cy="82" r="15" fill="#E06806"/><path d="M31 82 A29 29 0 0 1 89 82" fill="none" stroke="#E06806" stroke-width="9" stroke-linecap="round"/><path d="M16 82 A44 44 0 0 1 104 82" fill="none" stroke="#6FD08C" stroke-width="9" stroke-linecap="round"/><rect x="14" y="98" width="92" height="9" rx="4.5" fill="#6FD08C"/></svg><span style="font-family:var(--f-display);font-weight:600;font-size:40px;letter-spacing:.03em;color:#FFF7EC">HASHI</span></div><div style="width:120px;height:120px;border-radius:27px;background:#E06806;display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 120 120" width="76" height="76" aria-hidden="true" style="flex:none"><circle cx="60" cy="82" r="15" fill="#FFF7EC"/><path d="M31 82 A29 29 0 0 1 89 82" fill="none" stroke="#FFF7EC" stroke-width="9" stroke-linecap="round"/><path d="M16 82 A44 44 0 0 1 104 82" fill="none" stroke="#17482C" stroke-width="9" stroke-linecap="round"/><rect x="14" y="98" width="92" height="9" rx="4.5" fill="#17482C"/></svg></div></div></div>
+              </div>
+            </div>
+
+            <div class="sp-panel" data-s="archi" hidden>
+              <div class="pg">
+                <div><h4>Choix d'architecture</h4><ul><li>Modèles open source Hugging Face côté serveur : embeddings pour rapprocher un même produit entre enseignes, extraction des ingrédients</li><li>Calories et macros calculées par le code depuis Ciqual (ANSES) et Open Food Facts, jamais par un modèle de langage</li><li>Génération de recettes hybride : le modèle adapte, le code vérifie</li></ul></div>
+                <div><h4>Sécurité et conformité anticipées</h4><ul><li>RGPD : poids, objectif et photos sont des données sensibles. Hébergement en Europe, consentement, suppression sur demande</li><li>Licences des modèles et datasets vérifiées avant publication</li><li>Source des prix autorisée, scraping écarté</li></ul></div>
+                <div class="wide"><h4>Chaîne de contrôle d'une recette</h4>
+<pre class="sch">Profil / liste de courses / photo d'aliments
+        │
+   Normalisation des ingrédients
+        │
+   Modèle : crée ou adapte la recette
+        │
+   Contrôles par le code : Ciqual · Halal · allergies · coût
+        │  échec ──► retour au modèle pour correction, puis recontrôle
+        ▼
+   Recette affichée à l'utilisateur</pre></div>
+                <div class="wide"><h4>Jalons de réalisation</h4><ul><li>1. Format de recette commun et 10 recettes de test</li><li>2. Liste de courses automatique</li><li>3. Comparateur de prix par embeddings</li><li>4. Contrôles par le code</li><li>5. Génération de recettes</li><li>6. De la liste de courses vers des recettes</li><li>7. De la photo vers une recette</li></ul></div>
+              </div>
+            </div>
+
+            <div class="sp-panel" data-s="maq" hidden>
+              <div class="pg">
+                <div class="wide"><h4>Les écrans en images</h4><div class="seg" id="seg" role="group" aria-label="Thème"><button type="button" aria-pressed="true" data-t="">Clair</button><button type="button" aria-pressed="false" data-t="-sombre">Sombre</button></div><div class="shotwrap"><button type="button" class="ar l" id="shL" aria-label="Écran précédent">←</button><button type="button" class="ar r" id="shR" aria-label="Écran suivant">→</button><div class="shots" id="shots"><figure><button type="button" data-shot="Ouverture" aria-label="Agrandir : Ouverture"><img loading="lazy" src="media/screens/Ouverture.webp" alt="Écran Ouverture"></button><figcaption>Ouverture</figcaption></figure><figure><button type="button" data-shot="Promesse" aria-label="Agrandir : Promesse"><img loading="lazy" src="media/screens/Promesse.webp" alt="Écran Promesse"></button><figcaption>Promesse</figcaption></figure><figure><button type="button" data-shot="Connexion" aria-label="Agrandir : Connexion"><img loading="lazy" src="media/screens/Connexion.webp" alt="Écran Connexion"></button><figcaption>Connexion</figcaption></figure><figure><button type="button" data-shot="Creation" aria-label="Agrandir : Création de compte"><img loading="lazy" src="media/screens/Creation.webp" alt="Écran Création de compte"></button><figcaption>Création de compte</figcaption></figure><figure><button type="button" data-shot="Main" aria-label="Agrandir : Objectif"><img loading="lazy" src="media/screens/Main.webp" alt="Écran Objectif"></button><figcaption>Objectif</figcaption></figure><figure><button type="button" data-shot="Regime" aria-label="Agrandir : Régime alimentaire"><img loading="lazy" src="media/screens/Regime.webp" alt="Écran Régime alimentaire"></button><figcaption>Régime alimentaire</figcaption></figure><figure><button type="button" data-shot="Plan" aria-label="Agrandir : Plan prêt"><img loading="lazy" src="media/screens/Plan.webp" alt="Écran Plan prêt"></button><figcaption>Plan prêt</figcaption></figure><figure><button type="button" data-shot="Accueil" aria-label="Agrandir : Accueil"><img loading="lazy" src="media/screens/Accueil.webp" alt="Écran Accueil"></button><figcaption>Accueil</figcaption></figure><figure><button type="button" data-shot="Recettes" aria-label="Agrandir : Recettes"><img loading="lazy" src="media/screens/Recettes.webp" alt="Écran Recettes"></button><figcaption>Recettes</figcaption></figure><figure><button type="button" data-shot="Recette" aria-label="Agrandir : Fiche recette"><img loading="lazy" src="media/screens/Recette.webp" alt="Écran Fiche recette"></button><figcaption>Fiche recette</figcaption></figure><figure><button type="button" data-shot="Planning" aria-label="Agrandir : Planning"><img loading="lazy" src="media/screens/Planning.webp" alt="Écran Planning"></button><figcaption>Planning</figcaption></figure><figure><button type="button" data-shot="Courses" aria-label="Agrandir : Courses"><img loading="lazy" src="media/screens/Courses.webp" alt="Écran Courses"></button><figcaption>Courses</figcaption></figure><figure><button type="button" data-shot="Suivi" aria-label="Agrandir : Suivi du poids"><img loading="lazy" src="media/screens/Suivi.webp" alt="Écran Suivi du poids"></button><figcaption>Suivi du poids</figcaption></figure><figure><button type="button" data-shot="Profil" aria-label="Agrandir : Profil et réglages"><img loading="lazy" src="media/screens/Profil.webp" alt="Écran Profil et réglages"></button><figcaption>Profil et réglages</figcaption></figure><figure><button type="button" data-shot="Vide" aria-label="Agrandir : État vide"><img loading="lazy" src="media/screens/Vide.webp" alt="Écran État vide"></button><figcaption>État vide</figcaption></figure><figure><button type="button" data-shot="Erreur" aria-label="Agrandir : État hors ligne"><img loading="lazy" src="media/screens/Erreur.webp" alt="Écran État hors ligne"></button><figcaption>État hors ligne</figcaption></figure></div></div><p style="font-size:13px;color:var(--muted);margin-top:4px">Clique sur un écran pour l'agrandir.</p></div>
+                <div class="wide"><h4>16 écrans, chacun en thème clair et sombre</h4>
+                  <div class="grp"><p style="margin-bottom:6px">Entrée dans l'app</p><div class="chips"><span class="chip">Ouverture</span><span class="chip">Promesse</span><span class="chip">Connexion</span><span class="chip">Création de compte</span><span class="chip">Objectif</span><span class="chip">Régime alimentaire</span><span class="chip">Plan prêt</span></div></div>
+                  <div class="grp"><p style="margin-bottom:6px">Usage quotidien</p><div class="chips"><span class="chip">Accueil</span><span class="chip">Recettes</span><span class="chip">Fiche recette</span><span class="chip">Planning</span><span class="chip">Courses</span><span class="chip">Suivi du poids</span><span class="chip">Profil et réglages</span></div></div>
+                  <div class="grp"><p style="margin-bottom:6px">États particuliers</p><div class="chips"><span class="chip">État vide</span><span class="chip">État hors ligne</span></div></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="sp-panel" data-s="doc" hidden>
+              <div class="pg">
+                <div class="wide"><h4>Film de présentation</h4><p>Film motion design de 58 secondes, sans voix : le problème, l'objectif et les goûts, les recettes depuis une photo ou une liste de courses, le comparateur de prix, les moments de la journée, les défis, puis la signature HASHI. Il reprend le logo, la mascotte Élan de joie et les illustrations de la direction artistique, avec une musique et des effets sonores créés pour le film.</p>
+                  <div class="chips" style="margin-bottom:14px"><span class="chip">58 s</span><span class="chip">1080p · 60 images/s</span><span class="chip">Sans voix</span><span class="chip">Musique et sound design originaux</span></div>
+                  <video class="vid" controls autoplay muted loop preload="auto" playsinline poster="media/film-poster.jpg" aria-label="Film de présentation HASHI, 58 secondes"><source src="media/film-hashi.mp4" type="video/mp4"></video>
+                  <p style="font-size:13px;color:var(--muted);margin-top:8px">La vidéo démarre sans le son : active-le avec les contrôles du lecteur. Les chiffres affichés (calories, prix, économies) sont des exemples.</p></div>
+                <div class="wide"><h4>Storyboard en 9 scènes</h4><p>Chaque scène a été écrite puis minutée dans le script avant l'animation : image, texte à l'écran et son.</p><div class="shots frames"><figure><button type="button" data-zoom="media/storyboard/s1.webp" aria-label="Agrandir : scène 1, ouverture"><img loading="lazy" src="media/storyboard/s1.webp" alt="Scène 1 : le symbole Respiration se forme puis le nom HASHI glisse à côté"></button><figcaption>1 · Ouverture</figcaption></figure><figure><button type="button" data-zoom="media/storyboard/s2.webp" aria-label="Agrandir : scène 2, le problème"><img loading="lazy" src="media/storyboard/s2.webp" alt="Scène 2 : « Manger mieux, ça devrait être simple. »"></button><figcaption>2 · Le problème</figcaption></figure><figure><button type="button" data-zoom="media/storyboard/s3.webp" aria-label="Agrandir : scène 3, l'objectif"><img loading="lazy" src="media/storyboard/s3.webp" alt="Scène 3 : écran Objectif sur un téléphone, avec l'anneau de progression et les préférences"></button><figcaption>3 · L'objectif</figcaption></figure><figure><button type="button" data-zoom="media/storyboard/s4.webp" aria-label="Agrandir : scène 4, recettes depuis une photo"><img loading="lazy" src="media/storyboard/s4.webp" alt="Scène 4 : trois cartes de recettes générées à partir d'une photo d'aliments"></button><figcaption>4 · Une photo, des recettes</figcaption></figure><figure><button type="button" data-zoom="media/storyboard/s5.webp" aria-label="Agrandir : scène 5, liste de courses"><img loading="lazy" src="media/storyboard/s5.webp" alt="Scène 5 : une liste de courses devient un bol et une fiche recette"></button><figcaption>5 · Liste de courses</figcaption></figure><figure><button type="button" data-zoom="media/storyboard/s6.webp" aria-label="Agrandir : scène 6, comparateur de prix"><img loading="lazy" src="media/storyboard/s6.webp" alt="Scène 6 : comparaison du prix d'un panier dans trois magasins"></button><figcaption>6 · Comparateur de prix</figcaption></figure><figure><button type="button" data-zoom="media/storyboard/s7.webp" aria-label="Agrandir : scène 7, la journée"><img loading="lazy" src="media/storyboard/s7.webp" alt="Scène 7 : illustration du déjeuner dans le panoramique des moments de la journée"></button><figcaption>7 · La journée</figcaption></figure><figure><button type="button" data-zoom="media/storyboard/s8.webp" aria-label="Agrandir : scène 8, les défis"><img loading="lazy" src="media/storyboard/s8.webp" alt="Scène 8 : la mascotte Élan de joie dans un badge de défi"></button><figcaption>8 · Les défis</figcaption></figure><figure><button type="button" data-zoom="media/storyboard/s9.webp" aria-label="Agrandir : scène 9, signature"><img loading="lazy" src="media/storyboard/s9.webp" alt="Scène 9 : logo HASHI et baseline « Mangez mieux. Simplement. »"></button><figcaption>9 · Signature</figcaption></figure></div>
+                  <div class="res" style="margin-top:10px"><a href="media/hashi-script-motion-design.pdf" target="_blank" rel="noopener"><b>Script du film (PDF)</b><span>9 scènes minutées, texte à l'écran et son</span></a></div></div>
+                <div class="wide"><h4>L'app en images</h4><div class="shots"><figure><button type="button" data-zoom="media/screens/Accueil.webp" aria-label="Agrandir : Accueil du jour"><img loading="lazy" src="media/screens/Accueil.webp" alt="Écran Accueil du jour"></button><figcaption>Accueil du jour</figcaption></figure><figure><button type="button" data-zoom="media/screens/Recettes.webp" aria-label="Agrandir : Recettes adaptées"><img loading="lazy" src="media/screens/Recettes.webp" alt="Écran Recettes adaptées"></button><figcaption>Recettes adaptées</figcaption></figure><figure><button type="button" data-zoom="media/screens/Recette.webp" aria-label="Agrandir : Fiche recette"><img loading="lazy" src="media/screens/Recette.webp" alt="Écran Fiche recette"></button><figcaption>Fiche recette</figcaption></figure><figure><button type="button" data-zoom="media/screens/Planning.webp" aria-label="Agrandir : Planning de la semaine"><img loading="lazy" src="media/screens/Planning.webp" alt="Écran Planning de la semaine"></button><figcaption>Planning de la semaine</figcaption></figure><figure><button type="button" data-zoom="media/screens/Courses.webp" aria-label="Agrandir : Liste de courses"><img loading="lazy" src="media/screens/Courses.webp" alt="Écran Liste de courses"></button><figcaption>Liste de courses</figcaption></figure><figure><button type="button" data-zoom="media/screens/Suivi.webp" aria-label="Agrandir : Suivi du poids"><img loading="lazy" src="media/screens/Suivi.webp" alt="Écran Suivi du poids"></button><figcaption>Suivi du poids</figcaption></figure></div></div>
+                <div class="wide"><h4>Illustrations par moment de la journée</h4><p>Une image par moment (petit-déjeuner, déjeuner, dîner, collation), partagée par toutes les recettes de la catégorie : en grand dans la carte, en vignette dans les listes.</p><button type="button" class="docimg full" data-zoom="media/illustrations.webp" aria-label="Agrandir les illustrations par moment de la journée"><img loading="lazy" src="media/illustrations.webp" alt="Quatre illustrations HASHI : petit-déjeuner, déjeuner, dîner et collation, avec leurs cartes et vignettes de recettes"></button></div>
+                <div class="wide"><h4>Catalogue de 58 recettes</h4><p>Chaque recette indique calories, macros, ingrédients et étapes, et se filtre par régime, envie et repas.</p><button type="button" class="docimg" data-zoom="media/recettes-catalogue.webp" aria-label="Agrandir le catalogue de recettes"><img loading="lazy" src="media/recettes-catalogue.webp" alt="Catalogue des recettes HASHI avec filtres par régime, envie et repas"></button></div>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- PARCOURS -->
+    <section class="view" id="v-parcours" aria-label="Parcours" hidden>
+      <p class="kicker rv">Formation et expérience</p>
+      <h2 class="rv">Parcours</h2>
+      <p class="sub rv">Une reconversion vers l'informatique, appuyée sur plusieurs années de relation client.</p>
+      <ol class="tl">
+        <li class="rv"><time>Sept. 2026 →</time><div class="card"><h3>Technicien hotline, DSI du Département des Yvelines</h3><p>Alternance. Support de niveau 1 aux agents : prise en charge et qualification des tickets, escalade, téléphonie Genesys. Référent de la base de connaissance de l'équipe.</p></div></li>
+        <li class="rv"><time>2026 – 2028</time><div class="card"><h3>BTS SIO option SISR, ENSITECH (Cergy)</h3><p>Solutions d'infrastructure, systèmes et réseaux. Suite visée : Licence professionnelle, puis Master SSI.</p></div></li>
+        <li class="rv"><time><span class="ph">Dates</span></time><div class="card"><h3>Téléconseiller, MDPH</h3><p>Accueil téléphonique du public et traitement des dossiers sur logiciel métier. Sens du service et gestion de situations sensibles.</p></div></li>
+      </ol>
+    </section>
+
+    <!-- VEILLE -->
+    <section class="view" id="v-veille" aria-label="Veille" hidden>
+      <p class="kicker rv">Veille technologique</p>
+      <h2 class="rv">Veille</h2>
+      <p class="sub rv">Sujets suivis en cybersécurité, avec sources et date.</p>
+      <div class="grid">
+        <div class="card rv"><span class="tag">Sources</span><h3>Où je m'informe</h3><p><span class="ph">À compléter</span> : sites, newsletters, chaînes.</p></div>
+        <div class="card rv"><span class="tag">Sujet suivi</span><h3>Ton thème de veille</h3><p>Résumé en trois lignes, date, source et impact sur ton environnement de travail.</p></div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="view" id="v-contact" aria-label="Contact" hidden>
+      <p class="kicker rv">Échangeons</p>
+      <h2 class="rv">Contact</h2>
+      <p class="sub rv">Pour une alternance, un stage ou une question sur mes projets.</p>
+      <div class="contact">
+        <div class="card rv"><span class="tag">E-mail</span><div class="mailbig" id="mail">naimmaouche94@gmail.com</div><button class="btn" type="button" id="copy">Copier l'adresse</button></div>
+        <div class="card rv"><span class="tag">LinkedIn</span><p style="margin:0"><span class="ph">Lien de ton profil à ajouter</span></p></div>
+      </div>
+    </section>
+
+  </main>
+  <div id="lb" role="dialog" aria-label="Aperçu de l'écran"><button type="button" class="ar l" id="lbL" aria-label="Précédent">←</button><img alt=""><button type="button" class="ar r" id="lbR" aria-label="Suivant">→</button></div>
+  <footer>Portfolio BTS SIO SISR · mis à jour en octobre 2026</footer>
+</div>
+
+<script>
+(function () {
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var order = ['accueil', 'competences', 'projets', 'parcours', 'veille', 'contact'];
+  var EASE = 'cubic-bezier(.3,.8,.2,1)';
+  var tabs = document.getElementById('tabs'), hl = document.getElementById('hl');
+  var tabEls = Array.prototype.slice.call(tabs.querySelectorAll('.tab'));
+  var current = 'accueil', busy = false, proj = null;
+
+  /* ---------- Données ---------- */
+  var PROJECTS = [
+    { id: 'hara', cat: 'perso', title: 'HASHI', real: true, status: 'Conception', tags: ['Python', 'Hugging Face', 'RGPD'], blurb: 'Application de nutrition « Mange mieux, dépense moins »' },
+    { id: 'ad', cat: 'systemes', title: 'Annuaire Active Directory et stratégies de groupe', tags: ['Windows Server', 'AD DS', 'GPO'],
+      ctx: 'Une petite entreprise fictive de 40 postes veut centraliser ses comptes et appliquer des règles communes.',
+      steps: ['Installation du contrôleur de domaine', 'Création des unités d\'organisation et des groupes', 'GPO : mappage des lecteurs, politique de mots de passe'],
+      res: 'Les utilisateurs se connectent avec un compte unique et reçoivent leurs droits selon leur service.',
+      sch: '[Poste client] ──── [Switch] ──── [DC01 : AD DS, DNS, DHCP]\n                         └──────── [SRV-FILES : partages]' },
+    { id: 'vlan', cat: 'reseau', title: 'Segmentation en VLAN derrière un pare-feu pfSense', tags: ['pfSense', 'VLAN', 'Filtrage'],
+      ctx: 'Séparer les postes, les serveurs et les invités sur un même réseau physique.',
+      steps: ['Plan d\'adressage et création de 3 VLAN', 'Règles de filtrage entre zones', 'Tests de cloisonnement'],
+      res: 'Les invités accèdent à Internet uniquement, sans voir les serveurs.',
+      sch: 'Internet ── [pfSense] ── [Switch]\n                          ├─ VLAN 10 Postes\n                          ├─ VLAN 20 Serveurs\n                          └─ VLAN 30 Invités' },
+    { id: 'glpi', cat: 'support', title: 'Gestion de parc et de tickets avec GLPI', tags: ['GLPI', 'Inventaire', 'ITIL'],
+      ctx: 'Suivre le matériel et les demandes des utilisateurs dans un outil unique.',
+      steps: ['Déploiement de GLPI et de l\'agent d\'inventaire', 'Catégories de tickets et niveaux de priorité', 'Fiches de procédure pour les incidents fréquents'],
+      res: 'Chaque demande a un responsable, une priorité et un historique.', sch: '' },
+    { id: 'linux', cat: 'securite', title: 'Durcissement d\'un serveur Linux et lecture des journaux', tags: ['Linux', 'SSH', 'fail2ban'],
+      ctx: 'Réduire la surface d\'attaque d\'un serveur exposé.',
+      steps: ['Connexion SSH par clé, accès root désactivé', 'Pare-feu et fail2ban', 'Centralisation et lecture des journaux'],
+      res: 'Les tentatives de force brute sont bloquées et tracées.', sch: '' }
+  ];
+  var SKILLS = [
+    { t: 'Traiter et escalader un incident', b: 1, real: true, d: 'Qualification des tickets à la hotline, escalade vers le niveau supérieur.', link: 'parcours', lt: 'Voir le parcours' },
+    { t: 'Rédiger des procédures et animer une base de connaissance', b: 1, real: true, d: 'Référent de la base de connaissance de l\'équipe.', link: 'parcours', lt: 'Voir le parcours' },
+    { t: 'Gérer un parc informatique et des tickets', b: 1, d: 'Inventaire, catégories, priorités et procédures.', link: 3, lt: 'Voir le projet' },
+    { t: 'Administrer un annuaire et des stratégies de groupe', b: 2, d: 'Comptes, groupes et règles appliquées aux postes.', link: 1, lt: 'Voir le projet' },
+    { t: 'Segmenter et filtrer un réseau', b: 2, d: 'VLAN, plan d\'adressage et règles de pare-feu.', link: 2, lt: 'Voir le projet' },
+    { t: 'Durcir un serveur et lire ses journaux', b: 3, d: 'Accès par clé, pare-feu et détection des attaques.', link: 4, lt: 'Voir le projet' },
+    { t: 'Prendre en compte le RGPD et les licences', b: 3, real: true, d: 'Données sensibles et licences de modèles traitées dès la conception de HASHI.', link: 0, lt: 'Voir le projet' }
+  ];
+  var CATS = { perso: 'Personnel', systemes: 'Systèmes', reseau: 'Réseau', support: 'Support', securite: 'Sécurité' };
+
+  function el(tag, cls, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html !== undefined) e.innerHTML = html; return e; }
+  function li(arr) { return '<ul>' + arr.map(function (s) { return '<li>' + s + '</li>'; }).join('') + '</ul>'; }
+  function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+  /* Compétences */
+  var skillsBox = document.getElementById('skills');
+  SKILLS.forEach(function (s) {
+    var c = el('div', 'card skill');
+    c.setAttribute('data-b', s.b);
+    c.innerHTML = '<span class="tag">Bloc ' + s.b + '</span><h3>' + s.t + '</h3><div class="row">' + (s.real ? '<span class="real">Réel</span>' : '<span class="ex">Exemple</span>') + '</div><p>' + s.d + '</p><button class="go" type="button" data-link="' + s.link + '">' + s.lt + ' →</button>';
+    skillsBox.appendChild(c);
+  });
+
+  /* Projets : lignes + fiches des exemples */
+  var rowsBox = document.getElementById('rows'), details = document.getElementById('pdetails');
+  PROJECTS.forEach(function (p, i) {
+    var r = el('button', 'prow rv');
+    r.type = 'button'; r.setAttribute('data-p', i); r.setAttribute('data-cat', p.cat);
+    var badge = p.real ? '<span class="real">Réel · ' + p.status + '</span>' : '<span class="ex">Exemple</span>';
+    r.innerHTML = '<span class="n">' + pad(i + 1) + '</span><div><h3>' + p.title + '</h3><div class="meta">' + badge + '<span class="chip">' + CATS[p.cat] + '</span></div></div><span class="arrow" aria-hidden="true">→</span>';
+    rowsBox.appendChild(r);
+    if (i === 0) return;
+    var a = el('article', 'pd'); a.setAttribute('data-i', i); a.hidden = true;
+    a.innerHTML =
+      '<p class="kicker">' + CATS[p.cat] + '</p><h2>' + p.title + '</h2>' +
+      '<div class="pmeta"><span class="ex">Exemple à remplacer</span>' + p.tags.map(function (t) { return '<span class="chip">' + t + '</span>'; }).join('') + '</div>' +
+      '<div class="stabs" role="tablist" aria-label="Sections du projet"><span class="shl" aria-hidden="true"></span>' +
+      '<button class="st" role="tab" data-s="ctx" aria-selected="true">Contexte</button>' +
+      '<button class="st" role="tab" data-s="real" aria-selected="false">Réalisation</button>' +
+      '<button class="st" role="tab" data-s="res" aria-selected="false">Résultat et preuves</button></div>' +
+      '<div class="sp-panel" data-s="ctx"><div class="pg"><div class="wide"><h4>Le besoin</h4><p>' + p.ctx + '</p></div></div></div>' +
+      '<div class="sp-panel" data-s="real" hidden><div class="pg"><div><h4>Ce que j\'ai fait</h4>' + li(p.steps) + '</div>' + (p.sch ? '<div><h4>Schéma</h4><pre class="sch">' + p.sch + '</pre></div>' : '') + '</div></div>' +
+      '<div class="sp-panel" data-s="res" hidden><div class="pg"><div class="wide"><h4>Résultat</h4><p>' + p.res + '</p></div><div class="wide"><div class="slotbox"><strong>Preuves à ajouter.</strong> Captures d\'écran, configuration ou rapport de test.</div></div></div></div>';
+    details.appendChild(a);
+  });
+  var arts = Array.prototype.slice.call(details.querySelectorAll('.pd'));
+  arts.sort(function (x, y) { return +x.getAttribute('data-i') - +y.getAttribute('data-i'); });
+  arts.forEach(function (a) { details.appendChild(a); });
+  var plist = document.getElementById('plist'), pview = document.getElementById('pview'), cnt = document.getElementById('pcnt');
+
+  /* ---------- Animations ---------- */
+  function moveHl() {
+    var t = tabs.querySelector('.tab[aria-selected="true"]');
+    if (!t) return;
+    hl.style.left = t.offsetLeft + 'px';
+    hl.style.width = t.offsetWidth + 'px';
+    try { tabs.scrollTo({ left: t.offsetLeft - 40, behavior: reduce ? 'auto' : 'smooth' }); } catch (e) {}
+  }
+  function reveal(root) {
+    if (reduce || !root.animate) return;
+    Array.prototype.forEach.call(root.querySelectorAll('.rv'), function (n, i) {
+      if (n.hidden) return;
+      n.animate([{ opacity: 0, transform: 'translateY(16px)' }, { opacity: 1, transform: 'none' }], { duration: 480, delay: 60 + Math.min(i, 12) * 55, easing: EASE, fill: 'backwards' });
+    });
+  }
+  function swap(oldEl, newEl, dir, done) {
+    if (reduce || !oldEl.animate) { oldEl.hidden = true; newEl.hidden = false; if (done) done(); return; }
+    busy = true;
+    var out = oldEl.animate([{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'translateX(' + (-dir * 40) + 'px)' }], { duration: 200, easing: 'ease-in' });
+    out.onfinish = function () {
+      oldEl.hidden = true; newEl.hidden = false;
+      newEl.animate([{ opacity: 0, transform: 'translateX(' + (dir * 40) + 'px)' }, { opacity: 1, transform: 'none' }], { duration: 360, easing: EASE });
+      busy = false;
+      if (done) done();
+    };
+  }
+  function setHash(h) { try { history.replaceState(null, '', '#' + h); } catch (e) {} }
+
+  /* ---------- Navigation ---------- */
+  function go(view, opts) {
+    opts = opts || {};
+    if (busy || order.indexOf(view) < 0) return;
+    if (view === current) { if (view === 'projets' && proj !== null) showList(-1); return; }
+    var dir = order.indexOf(view) > order.indexOf(current) ? 1 : -1;
+    var oldEl = document.getElementById('v-' + current), newEl = document.getElementById('v-' + view);
+    current = view;
+    document.body.setAttribute('data-view', view);
+    tabEls.forEach(function (t) { t.setAttribute('aria-selected', t.getAttribute('data-v') === view ? 'true' : 'false'); });
+    moveHl();
+    if (view === 'projets') resetProjects();
+    swap(oldEl, newEl, dir, function () { reveal(newEl); if (view === 'accueil' && typeof schedule === 'function') { lastStep = -1; schedule(); } if (opts.open !== undefined) openProject(opts.open, 1); });
+    setHash(view);
+    window.scrollTo(0, 0);
+  }
+
+  function resetProjects() { proj = null; plist.hidden = false; pview.hidden = true; arts.forEach(function (a) { a.hidden = true; }); }
+  function placeStabs(art) {
+    var st = art.querySelector('.stabs'); if (!st) return;
+    var sel = st.querySelector('.st[aria-selected="true"]'), sb = st.querySelector('.shl');
+    if (sel && sb) { sb.style.left = sel.offsetLeft + 'px'; sb.style.width = sel.offsetWidth + 'px'; }
+  }
+  function updateCount() { cnt.textContent = (proj + 1) + ' / ' + arts.length; setHash('projet-' + (proj + 1)); }
+
+  function openProject(i, dir) {
+    if (busy) return;
+    if (!plist.hidden) {
+      proj = i;
+      arts.forEach(function (a, k) { a.hidden = k !== i; });
+      updateCount();
+      swap(plist, pview, dir || 1, function () { placeStabs(arts[i]); reveal(arts[i]); });
+    } else if (i !== proj) {
+      var d = i > proj ? 1 : -1, from = arts[proj], to = arts[i];
+      proj = i; updateCount();
+      swap(from, to, d, function () { placeStabs(to); });
+    }
+  }
+  function showList(dir) {
+    if (busy || !plist.hidden) return;
+    proj = null; setHash('projets');
+    swap(pview, plist, dir, function () { arts.forEach(function (a) { a.hidden = true; }); });
+  }
+
+  /* Sous-onglets */
+  pview.addEventListener('click', function (e) {
+    var b = e.target.closest ? e.target.closest('.st') : null;
+    if (!b) return;
+    var art = b.closest('.pd');
+    if (b.getAttribute('aria-selected') === 'true') return;
+    var oldP = art.querySelector('.sp-panel:not([hidden])'), newP = art.querySelector('.sp-panel[data-s="' + b.getAttribute('data-s') + '"]');
+    Array.prototype.forEach.call(art.querySelectorAll('.st'), function (x) { x.setAttribute('aria-selected', x === b ? 'true' : 'false'); });
+    placeStabs(art);
+    oldP.hidden = true; newP.hidden = false;
+    if (!reduce && newP.animate) newP.animate([{ opacity: 0, transform: 'translateY(12px)' }, { opacity: 1, transform: 'none' }], { duration: 340, easing: EASE });
+  });
+
+  /* Filtres */
+  function bindFilter(boxId, attr, apply) {
+    var box = document.getElementById(boxId);
+    box.addEventListener('click', function (e) {
+      var b = e.target.closest ? e.target.closest('button') : null; if (!b) return;
+      Array.prototype.forEach.call(box.querySelectorAll('button'), function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+      apply(b.getAttribute(attr));
+    });
+  }
+  function pop(nodes) {
+    if (reduce) return;
+    var k = 0;
+    Array.prototype.forEach.call(nodes, function (n) { if (!n.hidden && n.animate) n.animate([{ opacity: 0, transform: 'scale(.96)' }, { opacity: 1, transform: 'none' }], { duration: 300, delay: (k++) * 40, easing: EASE, fill: 'backwards' }); });
+  }
+  bindFilter('bfilters', 'data-b', function (v) {
+    var cards = skillsBox.children;
+    Array.prototype.forEach.call(cards, function (c) { c.hidden = v !== '0' && c.getAttribute('data-b') !== v; });
+    pop(cards);
+  });
+  bindFilter('pfilters', 'data-f', function (v) {
+    Array.prototype.forEach.call(rowsBox.children, function (r) { r.hidden = v !== 'all' && r.getAttribute('data-cat') !== v; });
+    pop(rowsBox.children);
+  });
+
+  /* Clics */
+  tabEls.forEach(function (t) { t.addEventListener('click', function () { go(t.getAttribute('data-v')); }); });
+  tabs.addEventListener('keydown', function (e) {
+    if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+    var i = order.indexOf(current) + (e.key === 'ArrowRight' ? 1 : -1);
+    if (i < 0 || i >= order.length) return;
+    e.preventDefault(); go(order[i]); tabEls[i].focus();
+  });
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest ? e.target : null; if (!t) return;
+    var g = t.closest('[data-go]');
+    if (g) { var o = g.getAttribute('data-open'); go(g.getAttribute('data-go'), o !== null ? { open: parseInt(o, 10) } : {}); return; }
+    var p = t.closest('[data-p]');
+    if (p) { openProject(parseInt(p.getAttribute('data-p'), 10), 1); return; }
+    var l = t.closest('[data-link]');
+    if (l) { var v = l.getAttribute('data-link'); if (/^\d+$/.test(v)) go('projets', { open: parseInt(v, 10) }); else go(v); }
+  });
+  document.getElementById('pback').addEventListener('click', function () { showList(-1); });
+  document.getElementById('pprev').addEventListener('click', function () { openProject((proj + arts.length - 1) % arts.length, -1); });
+  document.getElementById('pnext').addEventListener('click', function () { openProject((proj + 1) % arts.length, 1); });
+
+  /* Copier l'e-mail */
+  var copy = document.getElementById('copy'), mail = document.getElementById('mail');
+  copy.addEventListener('click', function () {
+    function ok() { copy.textContent = 'Copié'; setTimeout(function () { copy.textContent = 'Copier l\'adresse'; }, 1600); }
+    function sel() { try { var r = document.createRange(); r.selectNodeContents(mail); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); copy.textContent = 'Adresse sélectionnée'; } catch (e) {} }
+    try { navigator.clipboard.writeText(mail.textContent).then(ok, sel); } catch (e) { sel(); }
+  });
+
+  /* Mot qui change */
+  var rot = document.getElementById('rot'), words = ['la cybersécurité', 'le support', 'les systèmes', 'les réseaux'], wi = 0;
+  if (!reduce) {
+    setInterval(function () {
+      if (current !== 'accueil' || !rot.animate) return;
+      rot.animate([{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'translateY(-8px)' }], { duration: 180, easing: 'ease-in' }).onfinish = function () {
+        wi = (wi + 1) % words.length; rot.textContent = words[wi];
+        rot.animate([{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'none' }], { duration: 280, easing: EASE });
+      };
+    }, 2600);
+  }
+
+  /* ---------- Accueil : défilement façon présentation produit ---------- */
+  var home = document.getElementById('v-accueil');
+  var heroIn = document.getElementById('hero-in');
+  var wordsEl = document.getElementById('words');
+  var wordText = wordsEl.textContent.trim().split(/\s+/);
+  wordsEl.innerHTML = wordText.map(function (w) { return '<span>' + w + '</span>'; }).join(' ');
+  var wordSpans = wordsEl.querySelectorAll('span');
+  var pinSteps = document.getElementById('pin-steps'), stepEls = document.querySelectorAll('#steps .step'), dotEls = document.querySelectorAll('#dots i');
+  var pinProj = document.getElementById('pin-proj'), track = document.getElementById('track');
+  if (reduce) home.classList.add('static');
+
+  PROJECTS.forEach(function (p, i) {
+    var c = el('button', 'pc');
+    c.type = 'button'; c.setAttribute('data-link', i);
+    c.innerHTML = '<span class="n">' + pad(i + 1) + '</span><h3>' + p.title + '</h3><div class="chips">' + (p.real ? '<span class="real">Réel</span>' : '<span class="ex">Exemple</span>') + '</div><span class="go">Ouvrir le projet →</span>';
+    track.appendChild(c);
+  });
+
+  function clamp(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+  var ticking = false, lastStep = -1;
+  function frame() {
+    ticking = false;
+    if (current !== 'accueil' || reduce) return;
+    var vh = window.innerHeight;
+    /* Hero : recule et s'estompe */
+    var hp = clamp(window.scrollY / (vh * 0.7));
+    heroIn.style.transform = 'scale(' + (1 - 0.14 * hp) + ') translateY(' + (-hp * 50) + 'px)';
+    heroIn.style.opacity = String(1 - 0.85 * hp);
+    /* Phrase : les mots s'allument */
+    var wr = wordsEl.getBoundingClientRect();
+    var wp = clamp((vh * 0.85 - wr.top) / (vh * 0.45 + wr.height));
+    var lit = Math.round(wp * wordSpans.length);
+    for (var k = 0; k < wordSpans.length; k++) { var on = k < lit; if (wordSpans[k].classList.contains('lit') !== on) wordSpans[k].classList.toggle('lit', on); }
+    /* Étapes épinglées */
+    var sr = pinSteps.getBoundingClientRect(), sTotal = sr.height - vh;
+    var sp = clamp(-sr.top / sTotal);
+    var idx = Math.min(stepEls.length - 1, Math.floor(sp * stepEls.length));
+    if (idx !== lastStep) {
+      lastStep = idx;
+      for (var s = 0; s < stepEls.length; s++) {
+        stepEls[s].classList.toggle('on', s === idx);
+        stepEls[s].classList.toggle('past', s < idx);
+        dotEls[s].classList.toggle('on', s === idx);
+      }
+    }
+    /* Projets : défilement horizontal */
+    var pr = pinProj.getBoundingClientRect(), pTotal = pr.height - vh;
+    var pp = clamp(-pr.top / pTotal);
+    var maxX = Math.max(0, track.scrollWidth - track.parentNode.clientWidth);
+    track.style.transform = 'translateX(' + (-pp * maxX) + 'px)';
+  }
+  function schedule() { if (!ticking) { ticking = true; requestAnimationFrame(frame); } }
+  window.addEventListener('scroll', schedule, { passive: true });
+  window.addEventListener('resize', schedule);
+  schedule();
+
+  /* Apparitions et compteurs */
+  var counted = false;
+  function countUp() {
+    if (counted) return; counted = true;
+    Array.prototype.forEach.call(home.querySelectorAll('.stat b'), function (b) {
+      var to = +b.getAttribute('data-to'), unit = b.getAttribute('data-unit') || '';
+      if (reduce) { b.textContent = to + unit; return; }
+      var t0 = null;
+      function step(t) { if (t0 === null) t0 = t; var p = clamp((t - t0) / 1300), e = 1 - Math.pow(1 - p, 3); b.textContent = Math.round(to * e) + unit; if (p < 1) requestAnimationFrame(step); }
+      b.textContent = '0' + unit; requestAnimationFrame(step);
+    });
+  }
+  if ('IntersectionObserver' in window && !reduce) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        var n = en.target; io.unobserve(n);
+        if (n.classList.contains('stat')) countUp();
+        if (n.animate) n.animate([{ opacity: 0, transform: 'translateY(48px) scale(.97)' }, { opacity: 1, transform: 'none' }], { duration: 700, easing: EASE });
+      });
+    }, { threshold: 0.2 });
+    Array.prototype.forEach.call(home.querySelectorAll('.sr'), function (n) { io.observe(n); });
+  } else { countUp(); }
+
+  /* Démarrage */
+  document.body.setAttribute('data-view', 'accueil');
+  function relayout() { moveHl(); if (proj !== null) placeStabs(arts[proj]); }
+  window.addEventListener('resize', relayout);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(relayout);
+  moveHl();
+  var h = (location.hash || '').replace('#', ''), m = /^projet-(\d+)$/.exec(h);
+  if (m && +m[1] >= 1 && +m[1] <= arts.length) go('projets', { open: +m[1] - 1 });
+  else if (order.indexOf(h) > 0) go(h);
+  else reveal(document.getElementById('v-accueil'));
+})();
+
+  /* Galerie HASHI : thème, flèches, agrandissement */
+  (function () {
+    var seg = document.getElementById('seg'), shots = document.getElementById('shots'), lb = document.getElementById('lb');
+    if (!seg || !shots) return;
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches; var theme = '', cur = 0, figs = shots.querySelectorAll('figure'), N = figs.length;
+    var L = document.getElementById('shL'), R = document.getElementById('shR');
+    function name(i) { return figs[i].querySelector('button').getAttribute('data-shot'); }
+    function src(n) { return 'media/screens/' + n + theme + '.webp'; }
+    function step() { var f = figs[0], w = f.offsetWidth + 14; return Math.max(w, Math.floor(shots.clientWidth / w) * w * 0.9); }
+    function upd() { L.disabled = shots.scrollLeft < 4; R.disabled = shots.scrollLeft > shots.scrollWidth - shots.clientWidth - 4; }
+    L.addEventListener('click', function () { shots.scrollBy({ left: -step(), behavior: reduce ? 'auto' : 'smooth' }); });
+    R.addEventListener('click', function () { shots.scrollBy({ left: step(), behavior: reduce ? 'auto' : 'smooth' }); });
+    shots.addEventListener('scroll', upd, { passive: true }); window.addEventListener('resize', upd); if (window.ResizeObserver) new ResizeObserver(upd).observe(shots); upd();
+    seg.addEventListener('click', function (e) {
+      var b = e.target.closest('button'); if (!b) return;
+      theme = b.getAttribute('data-t');
+      Array.prototype.forEach.call(seg.querySelectorAll('button'), function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+      Array.prototype.forEach.call(shots.querySelectorAll('button'), function (x) { x.querySelector('img').src = src(x.getAttribute('data-shot')); });
+      if (lb.classList.contains('on')) show(cur);
+    });
+    function show(i) { cur = (i + N) % N; lb.classList.remove('solo'); lb.querySelector('img').src = src(name(cur)); lb.classList.add('on'); figs[cur].scrollIntoView({ inline: 'center', block: 'nearest' }); }
+    shots.addEventListener('click', function (e) {
+      var b = e.target.closest('button'); if (!b) return;
+      show(Array.prototype.indexOf.call(figs, b.parentNode));
+    });
+    lb.addEventListener('click', function (e) {
+      if (e.target.id === 'lbL') show(cur - 1); else if (e.target.id === 'lbR') show(cur + 1); else lb.classList.remove('on');
+    });
+    document.addEventListener('keydown', function (e) {
+      if (!lb.classList.contains('on')) return;
+      if (e.key === 'Escape') lb.classList.remove('on');
+      else if (e.key === 'ArrowLeft') show(cur - 1); else if (e.key === 'ArrowRight') show(cur + 1);
+    });
+  })();
+
+  /* Images isolées : agrandissement */
+  (function () {
+    var lb = document.getElementById('lb'); if (!lb) return;
+    document.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-zoom]'); if (!b) return;
+      lb.classList.add('solo'); lb.querySelector('img').src = b.getAttribute('data-zoom'); lb.classList.add('on');
+    });
+    lb.addEventListener('click', function () { if (!lb.classList.contains('on')) lb.classList.remove('solo'); });
+  })();
+
+  /* Flèches pour toutes les bandes d'images */
+  (function () {
+    var rm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    Array.prototype.forEach.call(document.querySelectorAll('.shots'), function (strip) {
+      if (strip.parentNode.classList.contains('shotwrap')) return;
+      var w = document.createElement('div'); w.className = 'shotwrap';
+      strip.parentNode.insertBefore(w, strip);
+      var l = document.createElement('button'), r = document.createElement('button');
+      l.type = r.type = 'button'; l.className = 'ar l'; r.className = 'ar r';
+      l.textContent = '←'; r.textContent = '→'; l.setAttribute('aria-label', 'Précédent'); r.setAttribute('aria-label', 'Suivant');
+      w.appendChild(l); w.appendChild(r); w.appendChild(strip);
+      function step() { var f = strip.querySelector('figure'); var cw = f.offsetWidth + 14; return Math.max(cw, Math.floor(strip.clientWidth / cw) * cw * 0.9); }
+      function upd() { l.disabled = strip.scrollLeft < 4; r.disabled = strip.scrollLeft > strip.scrollWidth - strip.clientWidth - 4; }
+      l.addEventListener('click', function () { strip.scrollBy({ left: -step(), behavior: rm ? 'auto' : 'smooth' }); });
+      r.addEventListener('click', function () { strip.scrollBy({ left: step(), behavior: rm ? 'auto' : 'smooth' }); });
+      strip.addEventListener('scroll', upd, { passive: true }); window.addEventListener('resize', upd);
+      if (window.ResizeObserver) new ResizeObserver(upd).observe(strip); setTimeout(upd, 300);
+    });
+  })();
+
+  /* Vidéo : lecture automatique à l'ouverture, pause quand elle n'est plus visible ; apparitions en cascade */
+  (function () {
+    var rm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var vid = document.querySelector('video.vid');
+    if (vid) {
+      vid.muted = true; vid.defaultMuted = true;
+      var want = false;
+      function tryPlay() { var p = vid.play(); if (p && p.catch) p.catch(function () {}); }
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (en) {
+          want = en[0].isIntersecting && vid.offsetParent !== null;
+          if (want) { if (!vid.dataset.seen) { vid.dataset.seen = '1'; vid.currentTime = 0; if (!rm && vid.animate) vid.animate([{ opacity: 0, transform: 'translateY(30px) scale(.96)' }, { opacity: 1, transform: 'none' }], { duration: 700, easing: 'cubic-bezier(.2,.8,.2,1)' }); } tryPlay(); } else vid.pause();
+        }, { threshold: 0.35 }).observe(vid);
+      } else tryPlay();
+    }
+    if (rm || !('IntersectionObserver' in window)) return;
+    var io = new IntersectionObserver(function (en) {
+      en.forEach(function (e) {
+        if (!e.isIntersecting) return; io.unobserve(e.target);
+        var kids = e.target.matches('.shots') ? e.target.querySelectorAll('figure') : [e.target];
+        Array.prototype.forEach.call(kids, function (k, i) {
+          if (k.animate) k.animate([{ opacity: 0, transform: 'translateX(40px) scale(.94)' }, { opacity: 1, transform: 'none' }], { duration: 650, delay: i * 90, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'backwards' });
+        });
+      });
+    }, { threshold: 0.15 });
+    Array.prototype.forEach.call(document.querySelectorAll('.shots, .docimg'), function (n) { io.observe(n); });
+  })();
+</script>
+
+</body></html>
