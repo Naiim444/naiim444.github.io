@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Naïm · Portfolio BTS SIO SISR</title>
-<meta name="description" content="Portfolio de Naïm, étudiant en BTS SIO option SISR et alternant à la DSI du Département des Yvelines : compétences, projets, parcours et veille en cybersécurité.">
+<meta name="description" content="Portfolio de Naïm, étudiant en BTS SIO option SISR et alternant à la DSI du Département des Yvelines : compétences, projets, parcours et contact.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Naïm · Portfolio BTS SIO SISR">
-<meta property="og:description" content="Compétences, projets (dont l'application HASHI), parcours et veille en cybersécurité.">
+<meta property="og:description" content="Compétences, projets (dont l'application HASHI), parcours et contact.">
 <meta name="theme-color" content="#4f46e5">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="fonts/fonts.css">
@@ -139,6 +139,7 @@ button.chip[aria-pressed="true"] { background: color-mix(in srgb, var(--accent) 
 .endcta h2 { font-size: clamp(2.6rem, 11vw, 7rem); letter-spacing: -.05em; }
 .endcta .sub { margin-inline: auto; }
 .static .pin { height: auto !important; }
+#pin-proj .stick { position: static; height: auto; padding-block: 8vh 0; }
 .static .stick { position: static; height: auto; padding-top: 48px; }
 .static .steps { min-height: 0; }
 .static .step { position: static; opacity: 1; transform: none; margin-bottom: 48px; pointer-events: auto; }
@@ -265,7 +266,6 @@ footer { margin-top: 72px; font-family: var(--f-mono); font-size: 12px; color: v
       <button class="tab" role="tab" data-v="competences" aria-selected="false">Compétences</button>
       <button class="tab" role="tab" data-v="projets" aria-selected="false">Projets</button>
       <button class="tab" role="tab" data-v="parcours" aria-selected="false">Parcours</button>
-      <button class="tab" role="tab" data-v="veille" aria-selected="false">Veille</button>
       <button class="tab" role="tab" data-v="contact" aria-selected="false">Contact</button>
     </nav>
   </header>
@@ -312,10 +312,10 @@ footer { margin-top: 72px; font-family: var(--f-mono); font-size: 12px; color: v
         <div class="stat sr"><b data-to="58" data-unit=" s">58 s</b><span>de film motion design pour HASHI</span></div>
       </div>
 
-      <div class="pin" id="pin-proj" style="height: 300vh">
+      <div class="pin" id="pin-proj" style="height:auto">
         <div class="stick">
           <p class="kicker">Projets</p>
-          <h2 class="sh">À la une</h2>
+          <h2 class="sh">Projet à la une</h2>
           <div class="trackwrap"><div class="track" id="track"></div></div>
         </div>
       </div>
@@ -339,7 +339,6 @@ footer { margin-top: 72px; font-family: var(--f-mono); font-size: 12px; color: v
       <div class="chips filters rv" id="bfilters" role="group" aria-label="Filtrer par bloc">
         <button class="chip" type="button" data-b="0" aria-pressed="true">Tous les blocs</button>
         <button class="chip" type="button" data-b="1" aria-pressed="false">Bloc 1 · Support</button>
-        <button class="chip" type="button" data-b="2" aria-pressed="false">Bloc 2 · Systèmes et réseaux</button>
         <button class="chip" type="button" data-b="3" aria-pressed="false">Bloc 3 · Cybersécurité</button>
       </div>
       <div class="grid" id="skills"></div>
@@ -350,15 +349,7 @@ footer { margin-top: 72px; font-family: var(--f-mono); font-size: 12px; color: v
       <div id="plist">
         <p class="kicker rv">Réalisations</p>
         <h2 class="rv">Projets</h2>
-        <p class="sub rv">Ouvre un projet pour parcourir sa fiche, puis passe au suivant avec les flèches.</p>
-        <div class="chips filters rv" id="pfilters" role="group" aria-label="Filtrer par domaine">
-          <button class="chip" type="button" data-f="all" aria-pressed="true">Tous</button>
-          <button class="chip" type="button" data-f="perso" aria-pressed="false">Personnel</button>
-          <button class="chip" type="button" data-f="systemes" aria-pressed="false">Systèmes</button>
-          <button class="chip" type="button" data-f="reseau" aria-pressed="false">Réseau</button>
-          <button class="chip" type="button" data-f="support" aria-pressed="false">Support</button>
-          <button class="chip" type="button" data-f="securite" aria-pressed="false">Sécurité</button>
-        </div>
+        <p class="sub rv">Ouvre un projet pour parcourir sa fiche : présentation, architecture, maquettes, film et documents.</p>
         <div class="rows" id="rows"></div>
       </div>
 
@@ -366,9 +357,7 @@ footer { margin-top: 72px; font-family: var(--f-mono); font-size: 12px; color: v
         <div class="pbar">
           <button type="button" id="pback">← Tous les projets</button>
           <span class="sp"></span>
-          <button type="button" id="pprev" aria-label="Projet précédent">←</button>
-          <span class="cnt" id="pcnt">1 / 5</span>
-          <button type="button" id="pnext" aria-label="Projet suivant">→</button>
+          <span class="cnt" id="pcnt" hidden></span>
         </div>
         <div id="pdetails">
 
@@ -421,6 +410,7 @@ footer { margin-top: 72px; font-family: var(--f-mono); font-size: 12px; color: v
                   <div class="grp"><p style="margin-bottom:6px">Usage quotidien</p><div class="chips"><span class="chip">Accueil</span><span class="chip">Recettes</span><span class="chip">Fiche recette</span><span class="chip">Planning</span><span class="chip">Courses</span><span class="chip">Suivi du poids</span><span class="chip">Profil et réglages</span></div></div>
                   <div class="grp"><p style="margin-bottom:6px">États particuliers</p><div class="chips"><span class="chip">État vide</span><span class="chip">État hors ligne</span></div></div>
                 </div>
+                <div class="wide"><div class="res"><a href="https://claude.ai/artifact/ViwSq2wi98k51cA1uKfode"><b>Ouvrir les maquettes</b><span>Écrans clés, clair et sombre</span></a></div></div>
               </div>
             </div>
 
@@ -435,6 +425,14 @@ footer { margin-top: 72px; font-family: var(--f-mono); font-size: 12px; color: v
                 <div class="wide"><h4>L'app en images</h4><div class="shots"><figure><button type="button" data-zoom="media/screens/Accueil.webp" aria-label="Agrandir : Accueil du jour"><img loading="lazy" src="media/screens/Accueil.webp" alt="Écran Accueil du jour"></button><figcaption>Accueil du jour</figcaption></figure><figure><button type="button" data-zoom="media/screens/Recettes.webp" aria-label="Agrandir : Recettes adaptées"><img loading="lazy" src="media/screens/Recettes.webp" alt="Écran Recettes adaptées"></button><figcaption>Recettes adaptées</figcaption></figure><figure><button type="button" data-zoom="media/screens/Recette.webp" aria-label="Agrandir : Fiche recette"><img loading="lazy" src="media/screens/Recette.webp" alt="Écran Fiche recette"></button><figcaption>Fiche recette</figcaption></figure><figure><button type="button" data-zoom="media/screens/Planning.webp" aria-label="Agrandir : Planning de la semaine"><img loading="lazy" src="media/screens/Planning.webp" alt="Écran Planning de la semaine"></button><figcaption>Planning de la semaine</figcaption></figure><figure><button type="button" data-zoom="media/screens/Courses.webp" aria-label="Agrandir : Liste de courses"><img loading="lazy" src="media/screens/Courses.webp" alt="Écran Liste de courses"></button><figcaption>Liste de courses</figcaption></figure><figure><button type="button" data-zoom="media/screens/Suivi.webp" aria-label="Agrandir : Suivi du poids"><img loading="lazy" src="media/screens/Suivi.webp" alt="Écran Suivi du poids"></button><figcaption>Suivi du poids</figcaption></figure></div></div>
                 <div class="wide"><h4>Illustrations par moment de la journée</h4><p>Une image par moment (petit-déjeuner, déjeuner, dîner, collation), partagée par toutes les recettes de la catégorie : en grand dans la carte, en vignette dans les listes.</p><button type="button" class="docimg full" data-zoom="media/illustrations.webp" aria-label="Agrandir les illustrations par moment de la journée"><img loading="lazy" src="media/illustrations.webp" alt="Quatre illustrations HASHI : petit-déjeuner, déjeuner, dîner et collation, avec leurs cartes et vignettes de recettes"></button></div>
                 <div class="wide"><h4>Catalogue de 58 recettes</h4><p>Chaque recette indique calories, macros, ingrédients et étapes, et se filtre par régime, envie et repas.</p><button type="button" class="docimg" data-zoom="media/recettes-catalogue.webp" aria-label="Agrandir le catalogue de recettes"><img loading="lazy" src="media/recettes-catalogue.webp" alt="Catalogue des recettes HASHI avec filtres par régime, envie et repas"></button></div>
+                <div class="wide"><h4>Documents et démonstrations</h4><p style="font-size:13px;color:var(--muted)">Ces liens ouvrent les documents sur claude.ai ; ils ne sont lisibles que si tu les partages.</p>
+                  <div class="res">
+                    <a href="https://claude.ai/artifact/2uoF3HjmcrKADYsMTHkCo4"><b>Cahier des charges</b><span>Document initial</span></a>
+                    <a href="https://claude.ai/artifact/JgD7TZ1dLtpKNyx2ju1njr"><b>Suite du cahier des charges</b><span>Briques IA, génération, jalons</span></a>
+                    <a href="https://claude.ai/artifact/QN71Bw9mjEjJFyiwGmKoz6"><b>Dossier de lancement</b><span>Présentation du projet</span></a>
+                    <a href="https://claude.ai/artifact/6oz9WGjS1wvtFg8uhdJwXQ"><b>Recettes de démonstration</b><span>Catalogue de 58 recettes</span></a>
+                    <a href="https://claude.ai/artifact/1PFBtPc9PPDCQcNbs5u3ZH"><b>Direction artistique</b><span>Nom, logo, palette, illustrations</span></a>
+                  </div></div>
               </div>
             </div>
           </article>
@@ -451,19 +449,8 @@ footer { margin-top: 72px; font-family: var(--f-mono); font-size: 12px; color: v
       <ol class="tl">
         <li class="rv"><time>Sept. 2026 →</time><div class="card"><h3>Technicien hotline, DSI du Département des Yvelines</h3><p>Alternance. Support de niveau 1 aux agents : prise en charge et qualification des tickets, escalade, téléphonie Genesys. Référent de la base de connaissance de l'équipe.</p></div></li>
         <li class="rv"><time>2026 – 2028</time><div class="card"><h3>BTS SIO option SISR, ENSITECH (Cergy)</h3><p>Solutions d'infrastructure, systèmes et réseaux. Suite visée : Licence professionnelle, puis Master SSI.</p></div></li>
-        <li class="rv"><time><span class="ph">Dates</span></time><div class="card"><h3>Téléconseiller, MDPH</h3><p>Accueil téléphonique du public et traitement des dossiers sur logiciel métier. Sens du service et gestion de situations sensibles.</p></div></li>
+        <li class="rv"><time>Avant 2026</time><div class="card"><h3>Téléconseiller, MDPH</h3><p>Accueil téléphonique du public et traitement des dossiers sur logiciel métier. Sens du service et gestion de situations sensibles.</p></div></li>
       </ol>
-    </section>
-
-    <!-- VEILLE -->
-    <section class="view" id="v-veille" aria-label="Veille" hidden>
-      <p class="kicker rv">Veille technologique</p>
-      <h2 class="rv">Veille</h2>
-      <p class="sub rv">Sujets suivis en cybersécurité, avec sources et date.</p>
-      <div class="grid">
-        <div class="card rv"><span class="tag">Sources</span><h3>Où je m'informe</h3><p><span class="ph">À compléter</span> : sites, newsletters, chaînes.</p></div>
-        <div class="card rv"><span class="tag">Sujet suivi</span><h3>Ton thème de veille</h3><p>Résumé en trois lignes, date, source et impact sur ton environnement de travail.</p></div>
-      </div>
     </section>
 
     <!-- CONTACT -->
@@ -473,7 +460,6 @@ footer { margin-top: 72px; font-family: var(--f-mono); font-size: 12px; color: v
       <p class="sub rv">Pour une alternance, un stage ou une question sur mes projets.</p>
       <div class="contact">
         <div class="card rv"><span class="tag">E-mail</span><div class="mailbig" id="mail">naimmaouche94@gmail.com</div><button class="btn" type="button" id="copy">Copier l'adresse</button></div>
-        <div class="card rv"><span class="tag">LinkedIn</span><p style="margin:0"><span class="ph">Lien de ton profil à ajouter</span></p></div>
       </div>
     </section>
 
@@ -485,7 +471,7 @@ footer { margin-top: 72px; font-family: var(--f-mono); font-size: 12px; color: v
 <script>
 (function () {
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var order = ['accueil', 'competences', 'projets', 'parcours', 'veille', 'contact'];
+  var order = ['accueil', 'competences', 'projets', 'parcours', 'contact'];
   var EASE = 'cubic-bezier(.3,.8,.2,1)';
   var tabs = document.getElementById('tabs'), hl = document.getElementById('hl');
   var tabEls = Array.prototype.slice.call(tabs.querySelectorAll('.tab'));
@@ -493,33 +479,11 @@ footer { margin-top: 72px; font-family: var(--f-mono); font-size: 12px; color: v
 
   /* ---------- Données ---------- */
   var PROJECTS = [
-    { id: 'hara', cat: 'perso', title: 'HASHI', real: true, status: 'Conception', tags: ['Python', 'Hugging Face', 'RGPD'], blurb: 'Application de nutrition « Mange mieux, dépense moins »' },
-    { id: 'ad', cat: 'systemes', title: 'Annuaire Active Directory et stratégies de groupe', tags: ['Windows Server', 'AD DS', 'GPO'],
-      ctx: 'Une petite entreprise fictive de 40 postes veut centraliser ses comptes et appliquer des règles communes.',
-      steps: ['Installation du contrôleur de domaine', 'Création des unités d\'organisation et des groupes', 'GPO : mappage des lecteurs, politique de mots de passe'],
-      res: 'Les utilisateurs se connectent avec un compte unique et reçoivent leurs droits selon leur service.',
-      sch: '[Poste client] ──── [Switch] ──── [DC01 : AD DS, DNS, DHCP]\n                         └──────── [SRV-FILES : partages]' },
-    { id: 'vlan', cat: 'reseau', title: 'Segmentation en VLAN derrière un pare-feu pfSense', tags: ['pfSense', 'VLAN', 'Filtrage'],
-      ctx: 'Séparer les postes, les serveurs et les invités sur un même réseau physique.',
-      steps: ['Plan d\'adressage et création de 3 VLAN', 'Règles de filtrage entre zones', 'Tests de cloisonnement'],
-      res: 'Les invités accèdent à Internet uniquement, sans voir les serveurs.',
-      sch: 'Internet ── [pfSense] ── [Switch]\n                          ├─ VLAN 10 Postes\n                          ├─ VLAN 20 Serveurs\n                          └─ VLAN 30 Invités' },
-    { id: 'glpi', cat: 'support', title: 'Gestion de parc et de tickets avec GLPI', tags: ['GLPI', 'Inventaire', 'ITIL'],
-      ctx: 'Suivre le matériel et les demandes des utilisateurs dans un outil unique.',
-      steps: ['Déploiement de GLPI et de l\'agent d\'inventaire', 'Catégories de tickets et niveaux de priorité', 'Fiches de procédure pour les incidents fréquents'],
-      res: 'Chaque demande a un responsable, une priorité et un historique.', sch: '' },
-    { id: 'linux', cat: 'securite', title: 'Durcissement d\'un serveur Linux et lecture des journaux', tags: ['Linux', 'SSH', 'fail2ban'],
-      ctx: 'Réduire la surface d\'attaque d\'un serveur exposé.',
-      steps: ['Connexion SSH par clé, accès root désactivé', 'Pare-feu et fail2ban', 'Centralisation et lecture des journaux'],
-      res: 'Les tentatives de force brute sont bloquées et tracées.', sch: '' }
+    { id: 'hara', cat: 'perso', title: 'HASHI', real: true, status: 'Conception', tags: ['Python', 'Hugging Face', 'RGPD'], blurb: 'Application de nutrition « Mange mieux, dépense moins »' }
   ];
   var SKILLS = [
     { t: 'Traiter et escalader un incident', b: 1, real: true, d: 'Qualification des tickets à la hotline, escalade vers le niveau supérieur.', link: 'parcours', lt: 'Voir le parcours' },
     { t: 'Rédiger des procédures et animer une base de connaissance', b: 1, real: true, d: 'Référent de la base de connaissance de l\'équipe.', link: 'parcours', lt: 'Voir le parcours' },
-    { t: 'Gérer un parc informatique et des tickets', b: 1, d: 'Inventaire, catégories, priorités et procédures.', link: 3, lt: 'Voir le projet' },
-    { t: 'Administrer un annuaire et des stratégies de groupe', b: 2, d: 'Comptes, groupes et règles appliquées aux postes.', link: 1, lt: 'Voir le projet' },
-    { t: 'Segmenter et filtrer un réseau', b: 2, d: 'VLAN, plan d\'adressage et règles de pare-feu.', link: 2, lt: 'Voir le projet' },
-    { t: 'Durcir un serveur et lire ses journaux', b: 3, d: 'Accès par clé, pare-feu et détection des attaques.', link: 4, lt: 'Voir le projet' },
     { t: 'Prendre en compte le RGPD et les licences', b: 3, real: true, d: 'Données sensibles et licences de modèles traitées dès la conception de HASHI.', link: 0, lt: 'Voir le projet' }
   ];
   var CATS = { perso: 'Personnel', systemes: 'Systèmes', reseau: 'Réseau', support: 'Support', securite: 'Sécurité' };
@@ -668,10 +632,6 @@ footer { margin-top: 72px; font-family: var(--f-mono); font-size: 12px; color: v
     Array.prototype.forEach.call(cards, function (c) { c.hidden = v !== '0' && c.getAttribute('data-b') !== v; });
     pop(cards);
   });
-  bindFilter('pfilters', 'data-f', function (v) {
-    Array.prototype.forEach.call(rowsBox.children, function (r) { r.hidden = v !== 'all' && r.getAttribute('data-cat') !== v; });
-    pop(rowsBox.children);
-  });
 
   /* Clics */
   tabEls.forEach(function (t) { t.addEventListener('click', function () { go(t.getAttribute('data-v')); }); });
@@ -691,8 +651,6 @@ footer { margin-top: 72px; font-family: var(--f-mono); font-size: 12px; color: v
     if (l) { var v = l.getAttribute('data-link'); if (/^\d+$/.test(v)) go('projets', { open: parseInt(v, 10) }); else go(v); }
   });
   document.getElementById('pback').addEventListener('click', function () { showList(-1); });
-  document.getElementById('pprev').addEventListener('click', function () { openProject((proj + arts.length - 1) % arts.length, -1); });
-  document.getElementById('pnext').addEventListener('click', function () { openProject((proj + 1) % arts.length, 1); });
 
   /* Copier l'e-mail */
   var copy = document.getElementById('copy'), mail = document.getElementById('mail');
@@ -760,10 +718,6 @@ footer { margin-top: 72px; font-family: var(--f-mono); font-size: 12px; color: v
       }
     }
     /* Projets : défilement horizontal */
-    var pr = pinProj.getBoundingClientRect(), pTotal = pr.height - vh;
-    var pp = clamp(-pr.top / pTotal);
-    var maxX = Math.max(0, track.scrollWidth - track.parentNode.clientWidth);
-    track.style.transform = 'translateX(' + (-pp * maxX) + 'px)';
   }
   function schedule() { if (!ticking) { ticking = true; requestAnimationFrame(frame); } }
   window.addEventListener('scroll', schedule, { passive: true });

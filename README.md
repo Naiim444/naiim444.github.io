@@ -1,6 +1,6 @@
 # Portfolio de Naïm · BTS SIO option SISR
 
-Portfolio personnel : compétences du référentiel BTS SIO SISR, projets, parcours, veille technologique et contact.
+Portfolio personnel : compétences du référentiel BTS SIO SISR, projets, parcours et contact.
 
 Projet phare : **HASHI**, une application de nutrition (cahier des charges, architecture, maquettes de 16 écrans, direction artistique et film de présentation de 58 s).
 
