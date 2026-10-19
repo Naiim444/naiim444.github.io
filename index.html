@@ -438,6 +438,34 @@ footer { margin-top: 72px; font-family: var(--f-mono); font-size: 12px; color: v
             </div>
           </article>
 
+          <article class="pd" data-i="1" hidden>
+            <p class="kicker">Projet personnel</p>
+            <h2>LAN SIO 2026</h2>
+            <div class="pmeta"><span class="real">Projet réel</span><span class="chip">Site en ligne</span><span class="chip">Site statique</span><span class="chip">Codeberg Pages</span><span class="chip">HTML · CSS · JavaScript</span></div>
+            <div class="stabs" role="tablist" aria-label="Sections du projet">
+              <span class="shl" aria-hidden="true"></span>
+              <button class="st" role="tab" data-s="pres" aria-selected="true">Présentation</button>
+              <button class="st" role="tab" data-s="real" aria-selected="false">Le site</button>
+            </div>
+
+            <div class="sp-panel" data-s="pres">
+              <div class="pg">
+                <div class="wide"><h4>Le projet</h4><p>Site de l'événement LAN SIO 2026 : un tournoi de jeux vidéo pour les étudiants de BTS SIO, le samedi 12 décembre 2026 de 10 h à 22 h, avec 48 places. Le site présente les jeux, le programme heure par heure, les infos pratiques et l'inscription.</p></div>
+                <div><h4>Ce que le site propose</h4><ul><li>Compte à rebours jusqu'à l'événement</li><li>Cinq jeux présentés avec un extrait vidéo en boucle</li><li>Programme des tournois, de 10 h 30 à 21 h</li><li>Page d'inscription</li><li>Infos pratiques : salle, matériel à apporter, tarifs</li><li>Mode sombre</li></ul></div>
+                <div><h4>Choix techniques</h4><ul><li>Site statique : rapide, sans serveur à entretenir</li><li>Hébergement gratuit sur Codeberg Pages, en Europe</li><li>Vidéos YouTube en mode sans cookies (youtube-nocookie)</li><li>Affichage adapté au téléphone</li></ul></div>
+                <div class="wide"><div class="res"><a href="https://naim444.codeberg.page/lan-sio/" target="_blank" rel="noopener"><b>Ouvrir le site</b><span>naim444.codeberg.page/lan-sio</span></a><a href="https://naim444.codeberg.page/lan-sio/inscription.html" target="_blank" rel="noopener"><b>Page d'inscription</b><span>Formulaire de l'événement</span></a></div></div>
+              </div>
+            </div>
+
+            <div class="sp-panel" data-s="real" hidden>
+              <div class="pg">
+                <div class="wide"><h4>Programme de la journée</h4><ul><li>10 h 30 · Trackmania : contre la montre sur cinq circuits</li><li>13 h · Rocket League : équipes de deux, élimination directe</li><li>16 h · Mario Kart : points cumulés sur huit courses</li><li>19 h · Échecs blitz : tableau suisse en six rondes</li><li>21 h · League of Legends : 5 contre 5, élimination directe</li></ul></div>
+                <div><h4>Infos pratiques</h4><p>Salle B12, campus de Saint-Quentin-en-Yvelines. Casque et manette à apporter. Entrée gratuite, boissons et pizzas à prix coûtant.</p></div>
+                <div><h4>Compétences mobilisées</h4><ul><li>Conception et mise en ligne d'un site web</li><li>Choix d'un hébergement et respect de la vie privée (pas de cookies tiers)</li><li>Organisation d'un événement : planning, matériel, accueil</li></ul></div>
+              </div>
+            </div>
+          </article>
+
         </div>
       </div>
     </section>
@@ -480,7 +508,8 @@ footer { margin-top: 72px; font-family: var(--f-mono); font-size: 12px; color: v
 
   /* ---------- Données ---------- */
   var PROJECTS = [
-    { id: 'hara', cat: 'perso', title: 'HASHI', real: true, status: 'Première version', tags: ['Python', 'Hugging Face', 'RGPD'], blurb: 'Application de nutrition « Mange mieux, dépense moins »' }
+    { id: 'hara', cat: 'perso', title: 'HASHI', real: true, status: 'Première version', tags: ['Python', 'Hugging Face', 'RGPD'], blurb: 'Application de nutrition « Mange mieux, dépense moins »', static: true },
+    { id: 'lan', cat: 'perso', title: 'LAN SIO 2026', real: true, status: 'En ligne', tags: ['HTML', 'CSS', 'JavaScript'], blurb: 'Site du tournoi de jeux vidéo des étudiants de BTS SIO', static: true }
   ];
   var SKILLS = [
     { t: 'Traiter et escalader un incident', b: 1, real: true, d: 'Qualification des tickets à la hotline, escalade vers le niveau supérieur.', link: 'parcours', lt: 'Voir le parcours' },
@@ -510,7 +539,7 @@ footer { margin-top: 72px; font-family: var(--f-mono); font-size: 12px; color: v
     var badge = p.real ? '<span class="real">Réel · ' + p.status + '</span>' : '<span class="ex">Exemple</span>';
     r.innerHTML = '<span class="n">' + pad(i + 1) + '</span><div><h3>' + p.title + '</h3><div class="meta">' + badge + '<span class="chip">' + CATS[p.cat] + '</span></div></div><span class="arrow" aria-hidden="true">→</span>';
     rowsBox.appendChild(r);
-    if (i === 0) return;
+    if (p.static) return;
     var a = el('article', 'pd'); a.setAttribute('data-i', i); a.hidden = true;
     a.innerHTML =
       '<p class="kicker">' + CATS[p.cat] + '</p><h2>' + p.title + '</h2>' +
