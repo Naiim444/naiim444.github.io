@@ -445,15 +445,22 @@ footer { margin-top: 72px; font-family: var(--f-mono); font-size: 12px; color: v
             <div class="stabs" role="tablist" aria-label="Sections du projet">
               <span class="shl" aria-hidden="true"></span>
               <button class="st" role="tab" data-s="pres" aria-selected="true">Présentation</button>
+              <button class="st" role="tab" data-s="cap" aria-selected="false">Captures</button>
               <button class="st" role="tab" data-s="real" aria-selected="false">Le site</button>
             </div>
 
             <div class="sp-panel" data-s="pres">
               <div class="pg">
                 <div class="wide"><h4>Le projet</h4><p>Site de l'événement LAN SIO 2026 : un tournoi de jeux vidéo pour les étudiants de BTS SIO, le samedi 12 décembre 2026 de 10 h à 22 h, avec 48 places. Le site présente les jeux, le programme heure par heure, les infos pratiques et l'inscription.</p></div>
-                <div><h4>Ce que le site propose</h4><ul><li>Compte à rebours jusqu'à l'événement</li><li>Cinq jeux présentés avec un extrait vidéo en boucle</li><li>Programme des tournois, de 10 h 30 à 21 h</li><li>Page d'inscription</li><li>Infos pratiques : salle, matériel à apporter, tarifs</li><li>Mode sombre</li></ul></div>
+                <div><h4>Ce que le site propose</h4><ul><li>Compte à rebours jusqu'à l'événement</li><li>Cinq jeux présentés avec un extrait vidéo en boucle</li><li>Programme des tournois, de 10 h 30 à 21 h</li><li>Page d'inscription : pseudo, choix du tournoi, places restantes et liste des inscrits</li><li>Infos pratiques : salle, matériel à apporter, tarifs</li><li>Mode sombre</li></ul></div>
                 <div><h4>Choix techniques</h4><ul><li>Site statique : rapide, sans serveur à entretenir</li><li>Hébergement gratuit sur Codeberg Pages, en Europe</li><li>Vidéos YouTube en mode sans cookies (youtube-nocookie)</li><li>Affichage adapté au téléphone</li></ul></div>
                 <div class="wide"><div class="res"><a href="https://naim444.codeberg.page/lan-sio/" target="_blank" rel="noopener"><b>Ouvrir le site</b><span>naim444.codeberg.page/lan-sio</span></a><a href="https://naim444.codeberg.page/lan-sio/inscription.html" target="_blank" rel="noopener"><b>Page d'inscription</b><span>Formulaire de l'événement</span></a></div></div>
+              </div>
+            </div>
+
+            <div class="sp-panel" data-s="cap" hidden>
+              <div class="pg">
+                <div class="wide"><h4>Le site en images</h4><div class="shots"><figure><button type="button" data-zoom="media/lan/accueil.webp" aria-label="Agrandir : Accueil et compte à rebours"><img loading="lazy" src="media/lan/accueil.webp" alt="Site LAN SIO : Accueil et compte à rebours" style="aspect-ratio:778/1530"></button><figcaption>Accueil et compte à rebours</figcaption></figure><figure><button type="button" data-zoom="media/lan/jeux.webp" aria-label="Agrandir : Les jeux"><img loading="lazy" src="media/lan/jeux.webp" alt="Site LAN SIO : Les jeux" style="aspect-ratio:778/1530"></button><figcaption>Les jeux</figcaption></figure><figure><button type="button" data-zoom="media/lan/programme.webp" aria-label="Agrandir : Programme"><img loading="lazy" src="media/lan/programme.webp" alt="Site LAN SIO : Programme" style="aspect-ratio:778/1530"></button><figcaption>Programme</figcaption></figure><figure><button type="button" data-zoom="media/lan/infos.webp" aria-label="Agrandir : Infos pratiques"><img loading="lazy" src="media/lan/infos.webp" alt="Site LAN SIO : Infos pratiques" style="aspect-ratio:778/1530"></button><figcaption>Infos pratiques</figcaption></figure><figure><button type="button" data-zoom="media/lan/inscription.webp" aria-label="Agrandir : Inscription"><img loading="lazy" src="media/lan/inscription.webp" alt="Site LAN SIO : Inscription" style="aspect-ratio:778/1530"></button><figcaption>Inscription</figcaption></figure><figure><button type="button" data-zoom="media/lan/jeux-sombre.webp" aria-label="Agrandir : Les jeux, mode sombre"><img loading="lazy" src="media/lan/jeux-sombre.webp" alt="Site LAN SIO : Les jeux, mode sombre" style="aspect-ratio:778/1530"></button><figcaption>Les jeux, mode sombre</figcaption></figure><figure><button type="button" data-zoom="media/lan/inscription-sombre.webp" aria-label="Agrandir : Inscription, mode sombre"><img loading="lazy" src="media/lan/inscription-sombre.webp" alt="Site LAN SIO : Inscription, mode sombre" style="aspect-ratio:778/1530"></button><figcaption>Inscription, mode sombre</figcaption></figure></div><p style="font-size:13px;color:var(--muted);margin-top:4px">Captures du site sur téléphone, en thème clair et sombre. Clique sur une image pour l'agrandir.</p></div>
               </div>
             </div>
 
